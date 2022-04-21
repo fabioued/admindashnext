@@ -2,25 +2,18 @@ import { useRouter } from "next/router"
 import React, { useContext, useEffect, useState } from 'react';
 import ProtectedRoute from "../../components/routes/protectedRoute"
 import InnerMenu from "../../components/Navigation/InnerMenu";
-import { Avatar } from 'antd'
+import { Avatar, Tag, Modal } from 'antd'
 import { CloseCircleFilled } from '@ant-design/icons';
 import { Context } from "../../context/index"
 import Moment from "react-moment";
 import { getName as getCountryName } from "country-list";
 import LoadMore from "../../components/loadMore/index"
-// import Modal from "react-modal";
-import { Modal, Button } from 'antd';
 import diasporaService from "../../services/diaspora/diasporaService";
-// import Image from "next/image";
-// import ConfirmDiasporaLoadMoreBtn from "../components/ConfirmDiasporaLoadMoreBtn";
-// import ConfirmDeletionDaispora from "../components/ConfirmDeletionDaispora";
 import RejectDiaspora from "../../components/diaspora/RejectDiaspora";
 import ViewSingDiasPora from "../../components/diaspora/ViewDiaspora";
-// import { add, open } from "../features/modal/modalSlice";
+import DeleteDiaspora from "../../components/diaspora/DeleteDiaspora";
+import Filter from "../../components/filters/index";
 // import { Calendar } from "react-multi-date-picker";
-// import withSession from "../lib/session";
-
-
 
 const confirmedDiaspora = () => {
     const links = [
@@ -34,14 +27,13 @@ const confirmedDiaspora = () => {
 
     const { state, dispatch } = useContext(Context);
     const [modalTitle, setModalTitle] = useState('');
-    const { confirmed_diaspora, confirmed_diaspora_count } = state;
-    const { modal_is_open, modal_name } = state;
-
-    const { page, pagination, has_more_data } = state;
+    const {
+        loading, confirmed_diaspora, confirmed_diaspora_count,
+        modal_is_open, modal_name,
+        page, pagination, has_more_data
+    } = state;
 
     let type = 0;
-
-
 
     useEffect(() => {
         (async () => {
@@ -50,7 +42,6 @@ const confirmedDiaspora = () => {
                 type: "CONFIRMED_DIASPORA",
                 payload: data.diaspora
             });
-
             dispatch({
                 type: "CONFIRMED_DIASPORA_COUNT",
                 payload: data.count
@@ -60,11 +51,7 @@ const confirmedDiaspora = () => {
                 type: "SET_CURRENT_PAGE",
                 payload: 'confirmed-diaspora'
             });
-
-
             data.count > 0 ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
-
-
         })();
     }, []);
 
@@ -87,9 +74,6 @@ const confirmedDiaspora = () => {
             type: "SET_MODAL_NAME",
             payload: "ViewDiaspora"
         });
-
-        //alert(diaspora?.users_id)
-
     }
 
     const closeModal = () => {
@@ -122,7 +106,19 @@ const confirmedDiaspora = () => {
     }
 
     const deletedDiaspora = (diaspora) => {
-
+        dispatch({
+            type: "SET_VIEWING_USER",
+            payload: diaspora
+        });
+        setModalTitle('Deleting Diaspora:  ' + diaspora?.users_firstname + ' ' + diaspora?.users_name)
+        dispatch({
+            type: "SET_MODAL",
+            payload: true
+        });
+        dispatch({
+            type: "SET_MODAL_NAME",
+            payload: "DeleteDiaspora"
+        });
     }
 
     return (
@@ -130,14 +126,17 @@ const confirmedDiaspora = () => {
             <InnerMenu links={links} />
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-lg-12">
+                    <div className="col-lg-8">
                         <div className="breadcrumb-main user-member justify-content-sm-between ">
                             <div className=" d-flex flex-wrap justify-content-center breadcrumb-main__wrapper">
                                 <div className="d-flex align-items-center user-member__title justify-content-center mr-sm-25">
-                                    <h4 className="text-capitalize fw-500 breadcrumb-title">Confirmed Diaspora ({confirmed_diaspora_count})</h4>
+                                    <h4 className="text-capitalize fw-500 breadcrumb-title pl-3">Confirmed Diaspora ({confirmed_diaspora_count})</h4>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className="col-lg-4">
+                        <Filter />
                     </div>
                 </div>
                 <div className="col-12">
@@ -148,7 +147,7 @@ const confirmedDiaspora = () => {
                                     <thead>
                                         <tr className="userDatatable-header">
                                             <th>
-                                                <span className="userDatatable-title">id</span>
+                                                <span className="userDatatable-title">id </span>
                                             </th>
                                             <th>
                                                 <span className="userDatatable-title">Name</span>
@@ -171,7 +170,7 @@ const confirmedDiaspora = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {confirmed_diaspora && confirmed_diaspora.length > 1 && confirmed_diaspora.map(function (diaspora, index) {
+                                        {confirmed_diaspora && confirmed_diaspora.length >= 1 && confirmed_diaspora.map(function (diaspora, index) {
                                             return (<tr key={index}>
                                                 <td>
                                                     <div className="userDatatable-content">{diaspora.users_id}</div>
@@ -184,30 +183,26 @@ const confirmedDiaspora = () => {
                                                                 <h6>
                                                                     {diaspora?.users_firstname + ' ' + diaspora?.users_name}
                                                                 </h6>
-                                                                {/* <span className="location"> {
-                                                                    getCountryName(diaspora.profile_birthCountry)
-                                                                }</span> */}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <span className="com-name">{getCountryName(diaspora.profile_birthCountry) ? getCountryName(diaspora.profile_birthCountry) : '-'}</span>
+                                                    <span className="com-name">{diaspora.profile_birthCountry ? getCountryName(diaspora.profile_birthCountry) : '-'}</span>
                                                 </td>
 
                                                 <td>
-                                                    <span className="email">{getCountryName(diaspora.profile_residenceContry) ? getCountryName(diaspora.profile_residenceContry) : '-'}</span>
+                                                    <span className="com-name">{diaspora.profile_residenceContry ? getCountryName(diaspora.profile_residenceContry) : '-'}</span>
                                                 </td>
                                                 <td>
-                                                    <span className="position"><Moment format="DD/MM/YYYY">
+                                                    <span className="com-name"><Moment format="DD/MM/YYYY">
                                                         {diaspora.users_created_at}
                                                     </Moment></span>
                                                 </td>
                                                 <td>
                                                     <div className="userDatatable-content d-inline-block">
-                                                        <span className="bg-opacity-warning color-warning rounded-pill userDatatable-content-status active">
-                                                            {diaspora.profile_preferedLanguage ? (diaspora.profile_preferedLanguage === 'en' ? 'English' : "French") : '-'}
-                                                        </span>
+
+                                                        {diaspora.profile_preferedLanguage ? (diaspora.profile_preferedLanguage === 'en' ? <Tag color="cyan">English</Tag> : <Tag color="purple">French</Tag>) : <Tag color="red">Not Defined</Tag>}
                                                     </div>
                                                 </td>
                                                 <td className="footable-last-visible">
@@ -232,6 +227,7 @@ const confirmedDiaspora = () => {
                                     </tbody>
 
                                 </table>
+
                             </div>
                         </div>
                     </div>
@@ -251,7 +247,7 @@ const confirmedDiaspora = () => {
                     onCancel={closeModal}
                     width={1000}
                     bodyStyle={{ overflowX: 'scroll' }}
-                    zIndex={10000000}
+                    zIndex={9000}
                     footer={null}
 
                 >
@@ -270,54 +266,27 @@ const confirmedDiaspora = () => {
                     width={700}
                     okText="Send"
                     onCancel={closeModal}
-                    zIndex={10000000}
+                    zIndex={9000}
                     footer={null}
                 >
                     <RejectDiaspora />
                 </Modal>
 
 
-
-
-                {/* Modals
-                
-
                 <Modal
-                    isOpen={modalIsOpen && modalName === "RejectDiaspora"}
-                    onAfterOpen={() => {
-                        document.body.style.overflow = "hidden";
-                    }}
-                    style={{
-                        content: {
-                            height: "auto",
-                            maxWidth: "800px",
-                            margin: "0 auto",
-                            border: "none",
-                            background: "transparent !important",
-                            inset: "0px",
-                        },
-                    }}
-                    contentLabel="Reject Diaspora"
+                    className="deleteDiasporaModal"
+                    destroyOnClose={true}
+                    centered={true}
+                    visible={modal_is_open && modal_name === "DeleteDiaspora"}
+                    title={modalTitle}
+                    closeIcon={<CloseCircleFilled style={{ fontSize: '150%' }} />}
+                    width={680}
+                    onCancel={closeModal}
+                    zIndex={9000}
+                    footer={null}
                 >
-                    <RejectDiaspora />
+                    <DeleteDiaspora />
                 </Modal>
-
-                <Modal
-                    isOpen={modalIsOpen && modalName === "ConfirmDeletionDaispora"}
-                    style={{
-                        content: {
-                            height: "auto",
-                            maxWidth: "800px",
-                            margin: "0 auto",
-                            border: "none",
-                            background: "transparent !important",
-                            inset: "0px",
-                        },
-                    }}
-                    contentLabel="ConfirmDeletionDaispora"
-                >
-                    <ConfirmDeletionDaispora />
-                </Modal> */}
             </div>
         </>
     );

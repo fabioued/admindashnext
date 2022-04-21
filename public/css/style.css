@@ -3,25 +3,75 @@
   border-radius: 20px !important;
 }
 
-/* .ant-modal-body {
-  height: calc(100vh - 110px);
-} */
+.Toastify {
+  z-index: 10000 !important;
+}
+
+.search-container {
+  width: 500px !important;
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: black !important;
+  opacity: 1;
+  /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: black !important;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: black !important;
+}
+
+
+.back-top .ant-back-top-icon {
+  background: #929292 !important;
+}
+
+.back-top .ant-back-top-icon:hover {
+  background: #349E4D !important;
+}
+
+.back-top,
+svg {
+  fill: #fff !important;
+}
+
+.search-container input {
+  border-radius: 0px !important;
+  padding: 14px !important;
+  border: 1px solid #d8d6d6 !important;
+  color: #000 !important;
+  border-radius: 10px 0px 0px 10px !important;
+}
 
 .diasporaModal .ant-modal-content,
-.rejectDiasporaModal .ant-modal-content {
+.rejectDiasporaModal .ant-modal-content,
+.deleteDiasporaModal .ant-modal-content {
   border-radius: 20px !important;
 }
 
 .diasporaModal .anticon,
-.rejectDiasporaModal .anticon {
+.rejectDiasporaModal .anticon,
+.deleteDiasporaModal .anticon {
   color: white;
 }
 
 .diasporaModal .ant-modal-title,
-.rejectDiasporaModal .ant-modal-title {
+.rejectDiasporaModal .ant-modal-title,
+.deleteDiasporaModal .ant-modal-title {
   font-weight: bold !important;
   color: white;
   font-size: 22px;
+}
+
+.deleteDiasporaModal .ant-modal-title {
+  text-align: center !important;
 }
 
 .diasporaModal .ant-modal-header {
@@ -30,9 +80,36 @@
 }
 
 
-.rejectDiasporaModal .ant-modal-header {
+.rejectDiasporaModal .ant-modal-header,
+.deleteDiasporaModal .ant-modal-header {
   background: #B70000;
   border-radius: 20px 20px 0px 0px !important;
+}
+
+.btn-delete,
+.btn-cancel {
+  padding: 1px 50px !important;
+  border-radius: 40px !important;
+  color: #fff !important;
+  font-size: 20px !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045) !important;
+}
+
+.btn-delete {
+  background: #B70000 !important;
+}
+
+.btn-delete:hover {
+  background: #eb3c3c !important;
+}
+
+.btn-cancel {
+  background: #627D97 !important;
+}
+
+.btn-cancel:hover {
+  background: #9da6ae !important;
 }
 
 .btn-submit {
@@ -48,6 +125,15 @@
 .btn-submit:hover {
   color: #fff !important;
   background: #349E4D !important;
+}
+
+
+.alert-danger-custom {
+  padding: 20px !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  background-color: #FFE9D9;
+  border-left: 5px solid #F35627 !important;
 }
 
 .reason {
@@ -4943,6 +5029,31 @@ ul {
   background: #f7f7fe;
 }
 
+.clear-form {
+  margin-left: -30px;
+  margin-right: 10px;
+}
+
+.clear-form:hover {
+  cursor: pointer;
+}
+
+.search-button {
+  background: #E2E2E2;
+  padding-right: 10px;
+  color: #000;
+  border-radius: 0px 10px 10px 0px;
+  border: 1px solid #E2E2E2;
+}
+
+.search-button:hover {
+  background: #349E4D;
+  padding-right: 10px;
+  color: #fff;
+  border-radius: 0px 10px 10px 0px;
+  border: 1px solid #349E4D;
+}
+
 .daterangepicker.show-calendar .calendar-table tbody td.available.active.end-date.in-range:before {
   opacity: 1;
 }
@@ -5050,7 +5161,7 @@ ul {
   width: 100%;
   left: 0;
   top: 0;
-  z-index: 9988;
+  z-index: 9000;
   background: #fff;
   box-shadow: 0px 2px 30px #9299b81a;
 }
@@ -5071,6 +5182,7 @@ ul {
 }
 
 .navbar-left {
+  width: 90%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

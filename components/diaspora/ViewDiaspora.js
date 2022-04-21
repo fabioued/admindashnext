@@ -42,8 +42,8 @@ const ViewDiasPora = () => {
                                         <p>Avatar</p>
                                     </div>
                                     <div className="col-md-6 list-side">
-                                        <p>{getCountryName(diaspora.overview.LivesIn) ? getCountryName(diaspora.overview.LivesIn) : '-'}</p>
-                                        <p>{getCountryName(diaspora.overview.Origin) ? getCountryName(diaspora.overview.Origin) : '-'}</p>
+                                        <p>{diaspora.overview.LivesIn ? getCountryName(diaspora.overview.LivesIn) : '-'}</p>
+                                        <p>{diaspora.overview.Origin ? getCountryName(diaspora.overview.Origin) : '-'}</p>
                                         <p>{diaspora.overview.EducationLevel ? diaspora.overview.EducationLevel : '-'}</p>
                                         <p>{diaspora.overview.YearsOfExperience ? diaspora.overview.YearsOfExperience : '-'}</p>
                                         <p><Link href={diaspora.overview.Avatar} passHref>
@@ -58,7 +58,7 @@ const ViewDiasPora = () => {
 
                 </div>
                 <div className="row mb-3">
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                         <div className="card diaspora-view-card looking_expertise">
                             <div className="card-header">
                                 Looking To
@@ -75,10 +75,26 @@ const ViewDiasPora = () => {
                         </div>
                     </div>
 
-                    <div className="col-md-6 ">
+                    <div className="col-md-4 ">
                         <div className="card diaspora-view-card looking_expertise">
                             <div className="card-header">
                                 Areas of expertise
+                            </div>
+                            <div className="card-body">
+                                <ul>
+                                    {diaspora.AreasOfExpertise && diaspora.AreasOfExpertise.length > 0 && diaspora.AreasOfExpertise.map(function (expertise, index) {
+                                        return (<span className="atbd-tag tag-light " key={index}>{expertise.name}</span>)
+                                    })}
+
+                                    {diaspora.AreasOfExpertise && diaspora.AreasOfExpertise.length < 1 && (<li className="text-center">No Data</li>)}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-4 ">
+                        <div className="card diaspora-view-card looking_expertise">
+                            <div className="card-header">
+                                Interested in startups within
                             </div>
                             <div className="card-body">
                                 <ul>
@@ -96,9 +112,9 @@ const ViewDiasPora = () => {
 
                 <div className="row mb-3">
                     <div className="col-md-12">
-                        <div class="table-responsive">
-                            <div class="p-3 diaspora-table-in-modal-header">Work Experience</div>
-                            <table class="table-sm table table-light table-striped  table-hover diaspora-table-in-modal">
+                        <div className="table-responsive">
+                            <div className="p-3 diaspora-table-in-modal-header">Work Experience</div>
+                            <table className="table table-light table-striped  table-hover diaspora-table-in-modal">
                                 <thead >
                                     <tr>
                                         <th>Title</th>
@@ -115,13 +131,14 @@ const ViewDiasPora = () => {
                                             <tr key={index}>
                                                 <td>{experience.title ? experience.title : '-'}</td>
                                                 <td>{experience.company ? experience.company : '-'}</td>
-                                                <td>{getCountryName(experience.country) ? getCountryName(experience.country) : '='}</td>
+                                                <td>{experience.country ? getCountryName(experience.country) : '='}</td>
                                                 <td>
                                                     <Moment format="DD/MM/YYYY">
                                                         {experience.startDate}
-                                                    </Moment> - <Moment format="DD/MM/YYYY">
+                                                    </Moment> - {experience.endDate === 'now' ? 'Now' : <Moment format="DD/MM/YYYY">
                                                         {experience.endDate}
-                                                    </Moment></td>
+                                                    </Moment>}</td>
+                                                <td>{experience.type ? experience.type : '-'}</td>
                                                 <td>{experience.description ? experience.description : '-'}</td>
                                             </tr>))
                                     ) : (
@@ -141,9 +158,9 @@ const ViewDiasPora = () => {
                 </div>
                 <div className="row mb-3">
                     <div className="col-md-12">
-                        <div class="table-responsive">
-                            <div class="p-3 diaspora-table-in-modal-header">Education</div>
-                            <table class="table-sm table table-light table-striped  table-hover diaspora-table-in-modal">
+                        <div className="table-responsive">
+                            <div className="p-3 diaspora-table-in-modal-header">Education</div>
+                            <table className="table table-light table-striped  table-hover diaspora-table-in-modal">
                                 <thead >
                                     <tr>
                                         <th>University</th>
@@ -155,32 +172,31 @@ const ViewDiasPora = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tbody>
-                                        {diaspora.workExperience.length > 0 ? (
-                                            diaspora.workExperience.map((education, index) => (
-                                                <tr key={index}>
-                                                    <td>{education.university ? education.university : '-'}</td>
-                                                    <td>{education.title ? education.title : '-'}</td>
-                                                    <td>{getCountryName(education.country) ? getCountryName(education.country) : '='}</td>
-                                                    <td>
-                                                        <Moment format="DD/MM/YYYY">
-                                                            {education.startDate}
-                                                        </Moment> - <Moment format="DD/MM/YYYY">
-                                                            {education.endDate}
-                                                        </Moment></td>
-                                                    <td>{education.description ? education.description : '-'}</td>
-                                                </tr>))
-                                        ) : (
+                                    {diaspora.educations.length > 0 ? (
+                                        diaspora.educations.map((education, index) => (
+                                            <tr key={index}>
+                                                <td>{education.university ? education.university : '-'}</td>
+                                                <td>{education.title ? education.title : '-'}</td>
+                                                <td>{education.country ? getCountryName(education.country) : '='}</td>
+                                                <td>
+                                                    <Moment format="DD/MM/YYYY">
+                                                        {education.startDate}
+                                                    </Moment> - {education.endDate === 'now' ? 'Now' : <Moment format="DD/MM/YYYY">
+                                                        {education.endDate}
+                                                    </Moment>}</td>
+                                                <td>{education.level ? education.level : '-'}</td>
+                                                <td>{education.description ? education.description : '-'}</td>
+                                            </tr>))
+                                    ) : (
 
-                                            <tr>
-                                                <td colSpan="6" className="text-center">
-                                                    There is no description for this diaspora
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td colSpan="6" className="text-center">
+                                                There is no Education cursus for this diaspora
+                                            </td>
+                                        </tr>
 
-                                        )}
+                                    )}
 
-                                    </tbody>
                                 </tbody>
                             </table>
                         </div>

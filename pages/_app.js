@@ -7,7 +7,7 @@ import 'antd/dist/antd.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../public/css/style.css';
-
+import NextNProgress from "nextjs-progressbar";
 
 // css
 import '../public/vendor_assets/css/bootstrap/bootstrap.css';
@@ -42,12 +42,14 @@ dynamic(() => import('../public/vendor_assets/js/jquery/jquery-3.5.1.min.js'), {
 
 import TopNav from '../components/Navigation/TopBar';
 import SideBar from '../components/Navigation/SideBar';
-
+import { BackTop } from 'antd';
 import { Provider } from '../context'
 
 function MyApp({ Component, pageProps }) {
     return (
         <Provider>
+            <BackTop className="back-top" />
+            <NextNProgress color="#349E4D" />
             <ToastContainer position='top-right' />
             <div className="layout-light side-menu overlayScroll">
                 <div className="mobile-search"></div>

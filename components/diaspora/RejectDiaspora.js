@@ -3,42 +3,73 @@ import { Modal, Alert } from 'antd';
 import { Context } from "../../context/index"
 import { toast } from "react-toastify"
 import { SyncOutlined } from '@ant-design/icons';
+import diasporaService from "../../services/diaspora/diasporaService";
 
 const RejectDiaspora = (diaspora) => {
     const { state, dispatch } = useContext(Context);
     const [reason, setReason] = useState("");
     const [email, setEmail] = useState("");
-    const { viewing_user } = state;
+    const { viewing_user, confirmed_diaspora
+    } = state;
     const [loading, setLoading] = useState(false);
 
     email = viewing_user.users_email;
     reason = "The personal profile submitted doesn't meet our sign-up requirements.&#13;&#10;&#13;&#10;To gain approval, please complete one or all of the following missing information &#13;&#10;&#13;&#10;Personal picture&#13;&#10;Detailed biography&#13;&#10;&#13;&#10;After completion, notify us for re - evaluation by replying this mail.";
 
     let message;
+    let id = viewing_user.users_id;
+    let name = viewing_user?.users_firstname + ' ' + viewing_user?.users_name;
+
     let lang = viewing_user.profile_preferedLanguage;
     if (lang === "fr") message = "The user language is French. Make sure to send your message in French. Thanks !!";
     else if (lang === "en") message = "The user language is English. Make sure to send your message in English. Thanks !!";
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        alert('handleSubmit')
         try {
             setLoading(true)
+            const payload = {
+                id,
+                name,
+                lang,
+                link: "https://ourbantaba.com",
+                email: "fabioued@yahoo.fr",
+                reason
+            }
+            await diasporaService.RejectDiaspora(payload);
+            let newRecords = confirmed_diaspora.filter(function (diaspora) {
+                return diaspora.users_id != id
+            });
+            dispatch({
+                type: "CONFIRMED_DIASPORA",
+                payload: newRecords
+            });
+            dispatch({
+                type: "CONFIRMED_DIASPORA_COUNT",
+                payload: newRecords.length
+            });
 
-            // dispatch({
-            //     type: "LOGIN",
-            //     payload: login.data
-            // })
             setLoading(false)
 
+            dispatch({
+                type: "SET_MODAL",
+                payload: true
+            });
 
+            dispatch({
+                type: "SET_MODAL_NAME",
+                payload: ""
+            });
+
+            toast.success('The user has been rejected successfully !!!', {
+                position: toast.POSITION.TOP_RIGHT
+            })
         } catch (err) {
             setLoading(false)
-            let message;
-            console.log({ err });
+            let message = err.message;
+            // console.log({ err });
             toast.error(message, {
-                position: toast.POSITION.TOP_CENTER
+                position: toast.POSITION.TOP_RIGHT
             })
 
         }

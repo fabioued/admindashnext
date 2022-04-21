@@ -1,67 +1,80 @@
 import Link from "next/link";
 import { Context } from '../../context';
-import { useContext, useState, useRef, useCallback } from 'react';
-import { Input, Space } from 'antd';
+import { useContext, useState, useRef, useEffect } from 'react';
 import diasporaService from "../../services/diaspora/diasporaService";
+import { toast } from "react-toastify"
+import { CloseCircleOutlined, CloseCircleFilled } from '@ant-design/icons';
 
-const { Search } = Input;
 const TopNav = () => {
     const { state, dispatch } = useContext(Context);
-    const { user, current_page, confirmed_diaspora, confirmed_diaspora_count } = state;
-    const [query, setQuery] = useState('')
-    const searchRef = useRef(null)
+    const { user, current_page, confirmed_diaspora, confirmed_diaspora_count, page, pagination, has_more_data
+    } = state;
+    const [query, setQuery] = useState('');
+    const searchRef = useRef(null);
+    const [loading, setLoading] = useState(false);
+    const [showClearButton, setShowClearButton] = useState(false);
+    const [showSearcbar, setShowSearcbar] = useState(false);
 
+    useEffect(() => {
+        (async () => {
+            if (current_page === 'dashboard' || current_page === 'landing-page') {
+                setShowSearcbar(false);
+            } else {
+                setShowSearcbar(true);
+            }
+        })();
+    }, []);
 
-    const searchFunc = useCallback(async (event) => {
-
-        // alert(query)
-
-        if (event.key === 'Enter') {
-            const data = await diasporaService.searchDiasporaRecord('fab');
-            if (current_page === 'confirmed-diaspora') {
-                //fliter
-                let user_id = data.diaspora ? data.diaspora[0].users_id : null;
-                if (user_id != null) {
-                    let res = confirmed_diaspora.fliter(user => {
-                        user.users_id === user_id;
-                    })
-                    console.log({
-                        user_id,
-                        res
-                    })
+    const search = (async (event) => {
+        event.preventDefault();
+        try {
+            if (query.length) {
+                setLoading(true)
+                if (current_page === 'confirmed-diaspora') {
+                    const data = await diasporaService.searchDiasporaRecord(query)
                     dispatch({
                         type: "CONFIRMED_DIASPORA",
-                        payload: res
+                        payload: data.diaspora
                     });
-                }
 
-                dispatch({
-                    type: "CONFIRMED_DIASPORA_COUNT",
-                    payload: data.count
-                });
+                    dispatch({
+                        type: "CONFIRMED_DIASPORA_COUNT",
+                        payload: data.count
+                    });
+
+                }
+                setLoading(false)
             }
 
-            // if (query.length) {
-            //     const data = await diasporaService.searchDiasporaRecord(query);
-            //     console.log({
-            //         data
-            //     });
-            //     if (current_page === 'confirmed-diaspora') {
-            //         dispatch({
-            //             type: "CONFIRMED_DIASPORA",
-            //             payload: data.diaspora
-            //         });
-            //     }
-            //     // fetch(searchEndpoint(query))
-            //     //     .then((res) => res.json())
-            //     //     .then((res) => {
-            //     //         setResults(res.results)
-            //     //     })
-            // }
+        } catch (err) {
+            setLoading(false)
+            let message = err.message;
+            // console.log({ err });
+            toast.error(message, {
+                position: toast.POSITION.TOP_RIGHT
+            })
+
         }
+    })
 
+    const clear = async (e) => {
+        setQuery('');
+        setShowClearButton(false);
+        let type = 0;
+        if (current_page === 'confirmed-diaspora') {
+            const data = await diasporaService.fetchRecords(page, pagination, type);
+            dispatch({
+                type: "CONFIRMED_DIASPORA",
+                payload: data.diaspora
+            });
+            dispatch({
+                type: "CONFIRMED_DIASPORA_COUNT",
+                payload: data.count
+            });
+            data.count > 0 ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
 
-    }, [])
+        }
+    }
 
 
     return (
@@ -79,56 +92,22 @@ const TopNav = () => {
                                 Admin Dashboard
                             </a>
                         </Link>
-                        <div
-                            ref={searchRef}
-                        >
-                            <input
-                                onChange={(e) => { setQuery(e.target.value) }}
-                                placeholder='Search posts'
-                                type='text'
-                                onKeyPress={searchFunc}
-                                value={query}
-                            />
-                        </div>
+                        {showSearcbar && <div className="search-container" ref={searchRef}>
+                            <form onSubmit={search}>
+                                <input
+                                    onChange={(e) => { setQuery(e.target.value); setShowClearButton(true); }}
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Search here.."
+                                    name="search"
+                                    value={query} />
+                                {showClearButton && <CloseCircleOutlined className="clear-form" style={{ color: '#E2E2E2' }} onClick={clear} />}
 
-                        {/* <form action="/" className="search-form">
-                            <span data-feather="search" />
-                            <input className="form-control mr-sm-2 box-shadow-none" type="search"
-
-                                onChange={onChange}
-
-                                placeholder="Search..." aria-label="Search" />
-                        </form> */}
-                    </div>
-                    <div className="navbar-right">
-                        <ul className="navbar-right__menu">
-                            <li className="nav-search d-none">
-                                <a href="#" className="search-toggle">
-                                    <i className="la la-search" />
-                                    <i className="la la-times" />
-                                </a>
-                            </li>
-                            {/* <li className="nav-author">
-                                <div className="dropdown-custom">
-                                    <div className="nav-author__info">
-                                        <div className="author-img">
-                                            <img src="https://thumbs.dreamstime.com/b/icon-profile-color-green-icon-profile-color-green-circle-color-dark-green-background-color-white-194702090.jpg" alt="" className="rounded-circle" />
-                                        </div>
-                                        <div>
-                                            <h6>{user.name}</h6>
-                                            <span>{user.email}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li> */}
-                        </ul>
-                        <div className="navbar-right__mobileAction d-md-none">
-                            <a href="#" className="btn-search">
-                                <span data-feather="search" />
-                                <span data-feather="x" /></a>
-                            <a href="#" className="btn-author-action">
-                                <span data-feather="more-vertical" /></a>
-                        </div>
+                                <button type="submit" className="search-button" disabled={loading}>
+                                    {loading ? <i class="fas fa-spinner fa-spin"></i> : <i className="fa fa-search"></i>}
+                                </button>
+                            </form>
+                        </div>}
                     </div>
                 </nav>
             </header>}

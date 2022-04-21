@@ -10,23 +10,18 @@ const initialState = {
     open: false,
     modal_is_open: false,
     has_more_data: false,
+    loading: true,
     modal_name: '',
     viewing_user: {},
     page: 0,
     current_page: '',
-    pagination: 20,
-    diaspora: {
-        loading: false,
-        isError: false,
-        message: ''
-    }
+    pagination: 100,
 }
 
 const Context = createContext()
 
 const rootReducer = (state, action) => {
     switch (action.type) {
-
         case "LOGIN":
             return { ...state, user: action.payload }
 
@@ -41,6 +36,9 @@ const rootReducer = (state, action) => {
 
         case "SET_MODAL":
             return { ...state, modal_is_open: action.payload }
+
+        case "SET_LOADING":
+            return { ...state, loading: action.payload }
 
         case "SET_MODAL_NAME":
             return { ...state, modal_name: action.payload }
@@ -60,7 +58,6 @@ const rootReducer = (state, action) => {
 
         case "SET_CURRENT_PAGE":
             return { ...state, current_page: action.payload }
-
 
         default:
             return state;

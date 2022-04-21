@@ -19,7 +19,7 @@ const Banner1 = ({ title, message, link, image, linkText }) => {
 
 const Banner2 = ({ title, message, link, image, linkText }) => {
   return (
-    <div className="col-xxl-4 col-sm-6">
+    <div className="col-xxl-3 col-sm-6">
       <div className="card banner-feature banner-feature--7">
         <div className="d-flex justify-content-center">
           <div className="card-body">

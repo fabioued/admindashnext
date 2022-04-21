@@ -15,7 +15,6 @@ const fetchSingleRecord = async (payload) => {
 
 
 const searchDiasporaRecord = async (query) => {
-    alert('query searchDiasporaRecord ' + query);
     const url = `${process.env.NEXT_PUBLIC_API_DEV}diaspora/admin/search`;
     const response = await axios.post(url, { query });
     return response.data;
@@ -33,7 +32,7 @@ const fetchLastMonthRecords = async (page) => {
         page,
         pagination: 20,
     };
-    const url = `https://api-dev.ourbantaba.com/diaspora/admin/filter`;
+    const url = `${process.env.NEXT_PUBLIC_API_DEV}diaspora/admin/filter`;
     const response = await axios.post(url, payload);
     return response.data;
 };
@@ -42,18 +41,15 @@ const deleteRecord = async (id) => {
     const payload = {
         id,
     };
-    const url = `https://api-dev.ourbantaba.com/diaspora/admin/delete-diaspora`;
+    const url = `${process.env.NEXT_PUBLIC_API_DEV}diaspora/admin/delete-diaspora`;
     const response = await axios.post(url, payload);
     response.data["id"] = id;
     return response.data;
 };
 
 const RejectDiaspora = async (payload) => {
-    const url = `https://api-dev.ourbantaba.com/diaspora/admin/reject-diaspora`;
+    const url = `${process.env.NEXT_PUBLIC_API_DEV}diaspora/admin/reject-diaspora`;
     const response = await axios.post(url, payload);
-    if (response.data.statusMsg) {
-        alert("You have been rejected successfully.");
-    }
     return response.data;
 };
 
@@ -66,7 +62,7 @@ const fetchDiasporaDateRange = async (payload) => {
         startDate,
         endDate,
     };
-    const url = `https://api-dev.ourbantaba.com/diaspora/admin/filter`;
+    const url = `${process.env.NEXT_PUBLIC_API_DEV}diaspora/admin/filter`;
     const response = await axios.post(url, data);
 
     if (response.data.statusMsg !== "Error") {
@@ -78,7 +74,7 @@ const fetchDiasporaDateRange = async (payload) => {
 };
 
 const confirmDiaspora = async (id) => {
-    const url = `https://api-dev.ourbantaba.com/diaspora/admin/confirm-diaspora`;
+    const url = `${process.env.NEXT_PUBLIC_API_DEV}diaspora/admin/confirm-diaspora`;
     const payload = {
         id,
     };

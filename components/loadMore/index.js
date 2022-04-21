@@ -4,11 +4,10 @@ import { SyncOutlined } from '@ant-design/icons';
 import { Context } from "../../context/index"
 import diasporaService from "../../services/diaspora/diasporaService";
 
-
 const Loadmore = ({ type }) => {
     const [loading, setLoading] = useState(false);
     const { state, dispatch } = useContext(Context);
-    const { confirmed_diaspora, page, pagination, has_more_data
+    const { confirmed_diaspora, confirmed_diaspora_count, page, pagination, has_more_data
     } = state;
     let records = [];
     if (type === 'confirmed-diaspora') {
@@ -29,14 +28,15 @@ const Loadmore = ({ type }) => {
             type
         };
         const data = await diasporaService.loadMoreRecords(payload);
-        console.log({
-            payload,
-            diaspora: data.diaspora,
-            confirmed_diaspora
-        })
+        let count = confirmed_diaspora_count + data.count;
         dispatch({
             type: "CONFIRMED_DIASPORA",
             payload: [...confirmed_diaspora, ...data.diaspora]
+        });
+
+        dispatch({
+            type: "CONFIRMED_DIASPORA_COUNT",
+            payload: count
         });
 
         if (data.count === 0) {

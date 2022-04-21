@@ -1,9 +1,11 @@
+import { useRouter } from 'next/router';
+
+
 const Index = () => {
-    return (
-        <>
-            <h1> Admin index</h1>
-        </>
-    );
+    const router = useRouter()
+    if (typeof window !== 'undefined') {
+        router.push('/dashboard')
+    }
 };
 
 export default Index;
