@@ -14,17 +14,9 @@ import ViewSingDiasPora from "../../components/diaspora/ViewDiaspora";
 import DeleteDiaspora from "../../components/diaspora/DeleteDiaspora";
 import Filter from "../../components/filters/index";
 // import { Calendar } from "react-multi-date-picker";
+import Links from "../../lib/innerMenu";
 
 const confirmedDiaspora = () => {
-    const links = [
-        {
-            name: 'Non Confirmed Diaspora',
-            link: "/diaspora/non-confirmed-diaspora"
-        }, {
-            name: 'Confirmed Diaspora',
-            link: "/diaspora/confirmed-diaspora"
-        }];
-
     const { state, dispatch } = useContext(Context);
     const [modalTitle, setModalTitle] = useState('');
     const {
@@ -123,7 +115,7 @@ const confirmedDiaspora = () => {
 
     return (
         <>
-            <InnerMenu links={links} />
+            <InnerMenu links={Links.DiasporaLinks} />
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-lg-8">

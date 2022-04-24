@@ -1,6 +1,6 @@
 import { Menu } from 'antd';
 import Link from "next/link";
-import { Home, LogOut, Briefcase, Layout, Users, Radio, Grid } from 'react-feather';
+import { Home, LogOut, Briefcase, Layout, Users, Radio, Layers, List, User } from 'react-feather';
 import { useState, useEffect, useContext } from 'react';
 import { Context } from '../../context';
 import { useRouter } from "next/router";
@@ -64,7 +64,7 @@ const SideBar = () => {
                             <li key="/diaspora" onClick={e => setCurrent(e.key)}>
                                 <Link href="/diaspora/non-confirmed-diaspora">
                                     <a className={current === '/diaspora/non-confirmed-diaspora' ? 'active' : ''}>
-                                        <UserSwitchOutlined className="nav-icon" />
+                                        <User className="nav-icon" />
                                         <span className="menu-text">Diaspora</span>
                                     </a>
                                 </Link>
@@ -79,7 +79,7 @@ const SideBar = () => {
                             </li>
 
                             <li key="/feeds" onClick={e => setCurrent(e.key)}>
-                                <Link href="/feeds">
+                                <Link href="/feeds/approved-feeds">
                                     <a className={current === '/feeds' ? 'active' : ''}>
                                         <Radio className="nav-icon" />
                                         <span className="menu-text">Feeds</span>
@@ -90,7 +90,7 @@ const SideBar = () => {
                             <li key="/blogs" onClick={e => setCurrent(e.key)}>
                                 <Link href="/blogs">
                                     <a className={current === '/blogs' ? 'active' : ''}>
-                                        <BarsOutlined className="nav-icon" />
+                                        <Layers className="nav-icon" />
                                         <span className="menu-text">Blog</span>
                                     </a>
                                 </Link>
@@ -99,7 +99,7 @@ const SideBar = () => {
                             <li key="/news" onClick={e => setCurrent(e.key)}>
                                 <Link href="/news">
                                     <a className={current === '/news' ? 'active' : ''}>
-                                        <WindowsOutlined className="nav-icon" />
+                                        <List className="nav-icon" />
                                         <span className="menu-text">News</span>
                                     </a>
                                 </Link>

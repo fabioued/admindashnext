@@ -26,11 +26,11 @@ const loadMoreRecords = async (payload) => {
     return response.data;
 };
 
-const fetchLastMonthRecords = async (page) => {
+const fetchLastMonthRecords = async (data) => {
     const payload = {
         option: "lastMonth",
-        page,
-        pagination: 20,
+        page: data.page,
+        pagination: data.pagination,
     };
     const url = `${process.env.NEXT_PUBLIC_API_DEV}diaspora/admin/filter`;
     const response = await axios.post(url, payload);

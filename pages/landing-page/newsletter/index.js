@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from "../../context/index"
 
 
-const News = () => {
+const Testimonials = () => {
 
     const { state, dispatch } = useContext(Context);
     const { current_page } = state;
@@ -56,7 +56,7 @@ const News = () => {
                         <div className="breadcrumb-main user-member justify-content-sm-between ">
                             <div className=" d-flex flex-wrap justify-content-center breadcrumb-main__wrapper">
                                 <div className="d-flex align-items-center user-member__title justify-content-center mr-sm-25">
-                                    <h4 className="text-capitalize fw-500 breadcrumb-title pl-3">All News</h4>
+                                    <h4 className="text-capitalize fw-500 breadcrumb-title pl-3">Manage Testimonials</h4>
                                 </div>
                             </div>
                         </div>
@@ -71,4 +71,4 @@ const News = () => {
     );
 };
 
-export default News;
+export default Testimonials;

@@ -6,7 +6,9 @@ import { useRouter } from "next/router";
 const initialState = {
     user: null,
     confirmed_diaspora: [],
+    feeds: [],
     confirmed_diaspora_count: 0,
+    feeds_count: 0,
     open: false,
     modal_is_open: false,
     has_more_data: false,
@@ -22,6 +24,8 @@ const Context = createContext()
 
 const rootReducer = (state, action) => {
     switch (action.type) {
+
+        /*      Auth    */
         case "LOGIN":
             return { ...state, user: action.payload }
 
@@ -33,6 +37,13 @@ const rootReducer = (state, action) => {
 
         case "CONFIRMED_DIASPORA_COUNT":
             return { ...state, confirmed_diaspora_count: action.payload }
+
+        case "SET_FEEDS":
+            return { ...state, feeds: action.payload }
+
+        case "SET_FEEDS_COUNT":
+            return { ...state, feeds_count: action.payload }
+
 
         case "SET_MODAL":
             return { ...state, modal_is_open: action.payload }
