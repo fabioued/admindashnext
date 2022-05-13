@@ -58,7 +58,7 @@ const ViewDiasPora = () => {
 
                 </div>
                 <div className="row mb-3">
-                    <div className="col-md-4">
+                    <div className="col-md-12 mb-3">
                         <div className="card diaspora-view-card looking_expertise">
                             <div className="card-header">
                                 Looking To
@@ -75,7 +75,7 @@ const ViewDiasPora = () => {
                         </div>
                     </div>
 
-                    <div className="col-md-4 ">
+                    <div className="col-md-6 ">
                         <div className="card diaspora-view-card looking_expertise">
                             <div className="card-header">
                                 Areas of expertise
@@ -83,7 +83,7 @@ const ViewDiasPora = () => {
                             <div className="card-body">
                                 <ul>
                                     {diaspora.AreasOfExpertise && diaspora.AreasOfExpertise.length > 0 && diaspora.AreasOfExpertise.map(function (expertise, index) {
-                                        return (<span className="atbd-tag tag-light " key={index}>{expertise.name}</span>)
+                                        return (<span className="atbd-tag tag-light " key={index}>{expertise.talent_name}</span>)
                                     })}
 
                                     {diaspora.AreasOfExpertise && diaspora.AreasOfExpertise.length < 1 && (<li className="text-center">No Data</li>)}
@@ -91,18 +91,18 @@ const ViewDiasPora = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-4 ">
+                    <div className="col-md-6 ">
                         <div className="card diaspora-view-card looking_expertise">
                             <div className="card-header">
                                 Interested in startups within
                             </div>
                             <div className="card-body">
                                 <ul>
-                                    {diaspora.AreasOfExpertise && diaspora.AreasOfExpertise.length > 0 && diaspora.AreasOfExpertise.map(function (expertise, index) {
-                                        return (<span className="atbd-tag tag-light " key={index}>{expertise.name}</span>)
+                                    {diaspora.within && diaspora.within.length > 0 && diaspora.within.map(function (interest, index) {
+                                        return (<span className="atbd-tag tag-light " key={index}>{interest.name}</span>)
                                     })}
 
-                                    {diaspora.AreasOfExpertise && diaspora.AreasOfExpertise.length < 1 && (<li className="text-center">No Data</li>)}
+                                    {diaspora.within && diaspora.within.length < 1 && (<li className="text-center">No Data</li>)}
                                 </ul>
                             </div>
                         </div>

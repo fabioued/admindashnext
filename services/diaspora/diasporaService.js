@@ -54,11 +54,11 @@ const RejectDiaspora = async (payload) => {
 };
 
 const fetchDiasporaDateRange = async (payload) => {
-    const { startDate, endDate, page } = payload;
+    const { startDate, endDate, page, pagination } = payload;
     const data = {
         option: "dateRange",
         page,
-        pagination: 20,
+        pagination,
         startDate,
         endDate,
     };

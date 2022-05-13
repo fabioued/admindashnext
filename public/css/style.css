@@ -1,9 +1,192 @@
+table tbody tr:hover td {
+  background: #e1faf0 !important;
+}
+
+.sidebar_menu_item .active {
+  background: #e1faf0 !important;
+}
+
+.calendar-toolbar {
+  height: 30px !important;
+  border-radius: 5px;
+  border: none !important;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 22px;
+  margin: 5px 0;
+}
+
+.calendar-toolbar-reset {
+  background-color: #e79d0a;
+}
+
+.calendar-toolbar-reset:hover {
+  background-color: #bd8005;
+}
+
+.calendar-toolbar-submit {
+  background-color: #00A241;
+}
+
+.calendar-toolbar-submit:hover {
+  background-color: #08642d;
+}
+
+.calendar-toolbar-close {
+  background-color: #FF4D4F;
+}
+
+.calendar-toolbar-close:hover {
+  background-color: #c61b1e;
+}
+
+
+/* Startups */
+.getVerifiedTable>thead th {
+  background: #85CDA0 !important;
+}
+
+.getVerifiedTable>thead th span {
+  color: #000 !important;
+  font-weight: bold !important;
+}
+
+.gvb-btn-view,
+.gvb-btn-confirm,
+.gvb-btn-reject {
+  font-weight: 500 !important;
+  width: 100px !important;
+  padding: 0px 20px !important;
+  margin-bottom: 10px !important;
+  border-radius: 5px !important;
+}
+
+.gvb-btn-view svg,
+.gvb-btn-confirm svg,
+.gvb-btn-reject svg {
+  margin-bottom: 5px !important;
+}
+
+.gvb-btn-view {
+  background: #CBDBF9 !important;
+  border: 1px solid #CBDBF9 !important;
+  color: #1700FF !important;
+}
+
+.gvb-btn-view svg {
+  fill: #1700FF !important;
+}
+
+.gvb-btn-view:hover {
+  border: 1px solid #1700FF !important;
+}
+
+.gvb-btn-confirm {
+  background: #D4EFDE !important;
+  border: 1px solid #D4EFDE !important;
+  color: #00A241 !important;
+
+}
+
+.gvb-btn-confirm svg,
+.gvb-status-accepted svg {
+  fill: #00A241 !important;
+}
+
+.gvb-btn-confirm:hover {
+  border: 1px solid #00A241 !important;
+}
+
+.gvb-btn-reject {
+  background: #FED5DA !important;
+  border: 1px solid #FED5DA !important;
+  color: #FF0000 !important;
+}
+
+.gvb-btn-reject svg,
+.gvb-status-declined svg {
+  fill: #FF0000 !important;
+}
+
+.gvb-btn-reject:hover {
+  border: 1px solid #FF0000 !important;
+}
+
+.gvb-status-pending svg {
+  fill: #FFCE00 !important;
+
+}
+
+.filterCalendar {
+  position: absolute !important;
+  margin-top: 0px !important;
+  right: 10px !important;
+  z-index: 100 !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.block {
+  display: block !important;
+}
+
+/* .tableClass {
+  position: absolute !important;
+  z-index: 1 !important;
+} */
+
 .feed-icon-diaspora svg,
 .feed-icon-pending svg,
 .feed-icon-public svg,
 .feed-icon-startup svg,
 .feed-icon-hidden svg {
   margin-bottom: 7px;
+}
+
+.ReactLoading svg {
+  fill: #349E4D !important;
+}
+
+.centeredLoader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform: -webkit-translate(-50%, -50%);
+  transform: -moz-translate(-50%, -50%);
+  transform: -ms-translate(-50%, -50%);
+  color: darkred;
+}
+
+.square img {
+  float: left !important;
+  margin: 5px !important;
+  width: 150px !important;
+  height: 150px !important;
+}
+
+.feed .image-container {
+  width: 150px !important;
+  height: 150px !important;
+  float: left !important;
+  margin: 0 20px 20px 0 !important;
+}
+
+.feed img {
+  float: left !important;
+  margin: 0 20px 20px 0 !important;
+
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+}
+
+.feed p {
+  text-align: left !important;
+  text-indent: 0em !important;
 }
 
 .group-title {
@@ -182,7 +365,8 @@ svg {
 }
 
 .btn-delete,
-.btn-cancel {
+.btn-cancel,
+.btn-add {
   padding: 1px 50px !important;
   border-radius: 40px !important;
   color: #fff !important;
@@ -191,8 +375,16 @@ svg {
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045) !important;
 }
 
+.btn-add {
+  background: #349E4D !important;
+}
+
 .btn-delete {
   background: #B70000 !important;
+}
+
+.btn-add:hover {
+  background: #19682c !important;
 }
 
 .btn-delete:hover {
@@ -293,8 +485,15 @@ svg {
   height: 240px !important;
 }
 
+.about_overview_startup,
+.team_desc {
+  height: 280px !important;
+  overflow-y: scroll !important;
+}
+
 .looking_expertise {
   height: 200px !important;
+  overflow-y: scroll !important;
 }
 
 .about-content {
@@ -348,9 +547,9 @@ svg {
   width: auto !important;
   height: 20px !important;
   padding: 10px 30px !important;
-  background: #EAEAEA;
+  background: #F2F2F2;
   border-radius: 30px;
-  color: #838383;
+  color: #030303;
   border: 1px solid #d7d7d7;
   margin: 5px !important;
 }
@@ -5150,6 +5349,10 @@ ul {
 .clear-form {
   margin-left: -30px;
   margin-right: 10px;
+}
+
+.clear-form svg {
+  fill: black !important;
 }
 
 .clear-form:hover {

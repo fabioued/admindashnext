@@ -44,7 +44,14 @@ const InnerMenu = ({ links }) => {
                         {links.map(function (item, index) {
                             return (
                                 <div>
-                                    <Link key={index} onClick={e => setCurrent(e.key)} href={item.link}>
+                                    <Link key={index} onClick={e => {
+                                        setCurrent(e.key);
+
+                                        dispatch({
+                                            type: "SET_PAGE",
+                                            payload: 0
+                                        });
+                                    }} href={item.link}>
                                         <a className={`${current === item.link ? 'active' : ''} inner-menu-button`}>{item
                                             .name}</a></Link>
                                 </div>
@@ -52,7 +59,7 @@ const InnerMenu = ({ links }) => {
                         })}
                     </Carousel>
                 </div>
-            </div>
+            </div >
         </>
     );
 };

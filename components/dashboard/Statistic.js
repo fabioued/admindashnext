@@ -8,7 +8,7 @@ const Statistic = ({ title, count, image, type }) => {
         type = 'primary'
     }
     return (
-        <div class="col-xxl-3 col-lg-4 col-md-6 mb-25">
+        <div class="col-md-3 mb-25">
             <div class="feature-cards5 d-flex justify-content-between border-0 radius-xl bg-white p-25">
                 <div class="application-task d-flex align-items-center">
                     <div class={`application-task-icon wh-60 bg-${type} content-center`}>

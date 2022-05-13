@@ -2,12 +2,17 @@ import Link from "next/link";
 import { Context } from '../../context';
 import { useContext, useState, useRef, useEffect } from 'react';
 import diasporaService from "../../services/diaspora/diasporaService";
+import startupService from "../../services/startups/startupsService";
+import feedService from "../../services/feeds/feedService";
 import { toast } from "react-toastify"
 import { CloseCircleOutlined, CloseCircleFilled } from '@ant-design/icons';
 
 const TopNav = () => {
     const { state, dispatch } = useContext(Context);
-    const { user, current_page, confirmed_diaspora, confirmed_diaspora_count, page, pagination, has_more_data
+    const { user, current_page,
+        confirmed_diaspora,
+        confirmed_diaspora_count, page, pagination, has_more_data,
+        feeds_count, feeds
     } = state;
     const [query, setQuery] = useState('');
     const searchRef = useRef(null);
@@ -17,37 +22,73 @@ const TopNav = () => {
 
     useEffect(() => {
         (async () => {
-            if (current_page === 'dashboard' || current_page === 'landing-page') {
-                setShowSearcbar(false);
-            } else {
-                setShowSearcbar(true);
+            if (current_page && current_page != 'dashboard' && current_page != 'landing-page') {
+                setShowSearcbar(true)
             }
         })();
-    }, []);
+    }, [current_page]);
+
 
     const search = (async (event) => {
         event.preventDefault();
         try {
             if (query.length) {
-                setLoading(true)
-                if (current_page === 'confirmed-diaspora') {
+                dispatch({
+                    type: "SET_LOADING",
+                    payload: true
+                });
+                if (current_page === 'confirmed-diaspora' || current_page === 'non-confirmed-diaspora') {
                     const data = await diasporaService.searchDiasporaRecord(query)
                     dispatch({
-                        type: "CONFIRMED_DIASPORA",
+                        type: "SET_DIASPORA",
                         payload: data.diaspora
                     });
 
                     dispatch({
-                        type: "CONFIRMED_DIASPORA_COUNT",
+                        type: "SET_DIASPORA_COUNT",
+                        payload: data.count
+                    });
+
+                } else if (current_page === 'confirmed-startups' || current_page === 'non-confirmed-startups') {
+                    const data = await startupService.searchStartupsRecord(query)
+                    dispatch({
+                        type: "SET_STARTUPS",
+                        payload: data.startups
+                    });
+
+                    dispatch({
+                        type: "SET_STARTUPS_COUNT",
                         payload: data.count
                     });
 
                 }
-                setLoading(false)
+
+                else if (current_page === "approved-feeds" || current_page === "non-approved-feeds") {
+
+                    const data = await feedService.searchFeeds(query)
+                    dispatch({
+                        type: "SET_FEEDS",
+                        payload: data.feeds
+                    });
+
+                    dispatch({
+                        type: "SET_FEEDS_COUNT",
+                        payload: data.count
+                    });
+                }
+                dispatch({
+                    type: "SET_LOADING",
+                    payload: false
+                });
+
+                dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
             }
 
         } catch (err) {
-            setLoading(false)
+            dispatch({
+                type: "SET_LOADING",
+                payload: false
+            });
             let message = err.message;
             // console.log({ err });
             toast.error(message, {
@@ -60,20 +101,45 @@ const TopNav = () => {
     const clear = async (e) => {
         setQuery('');
         setShowClearButton(false);
+        dispatch({
+            type: "SET_LOADING",
+            payload: true
+        });
         let type = 0;
         if (current_page === 'confirmed-diaspora') {
             const data = await diasporaService.fetchRecords(page, pagination, type);
             dispatch({
-                type: "CONFIRMED_DIASPORA",
+                type: "SET_DIASPORA",
                 payload: data.diaspora
             });
             dispatch({
-                type: "CONFIRMED_DIASPORA_COUNT",
+                type: "SET_DIASPORA_COUNT",
                 payload: data.count
             });
             data.count > 0 ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
 
+        } else if (current_page === 'approved-feeds' || current_page === 'non-approved-feeds') {
+            current_page === 'approved-feeds' ? type = 0 : type = 1;
+            let lang = 'en';
+            const data = await feedService.fetchFeeds({
+                page, pagination, type, lang
+            });
+            dispatch({
+                type: "SET_FEEDS",
+                payload: data.feeds
+            });
+            dispatch({
+                type: "SET_FEEDS_COUNT",
+                payload: data.count
+            });
+
+            feeds_count > 0 ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
         }
+
+        dispatch({
+            type: "SET_LOADING",
+            payload: false
+        });
     }
 
 
@@ -92,6 +158,7 @@ const TopNav = () => {
                                 Admin Dashboard
                             </a>
                         </Link>
+
                         {showSearcbar && <div className="search-container" ref={searchRef}>
                             <form onSubmit={search}>
                                 <input

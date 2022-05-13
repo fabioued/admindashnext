@@ -9,12 +9,17 @@ export const fetchFeeds = async (payload) => {
 };
 
 const loadMoreRecords = async (payload) => {
-    const { lang, page } = payload;
-    const url = `${process.env.NEXT_PUBLIC_API_DEV}feeds/admin/loadmore-feeds/${page}/20/0/${lang}`;
+    const { lang, page, pagination, type } = payload;
+    const url = `${process.env.NEXT_PUBLIC_API_DEV}feeds/admin/loadmore-feeds/${page}/${pagination}/${type}/${lang}`;
     const response = await axios.get(url);
     return response.data;
 };
 
+const searchFeeds = async (query) => {
+    const url = `${process.env.NEXT_PUBLIC_API_DEV}feeds/admin/search`;
+    const response = await axios.post(url, { query });
+    return response.data;
+};
 const deleteFeed = async (id) => {
     const url = `${process.env.NEXT_PUBLIC_API_DEV}feeds/admin/delete/${id}`;
     const response = await axios.get(url);
@@ -48,6 +53,7 @@ const feedService = {
     deleteFeed,
     rejectFeed,
     approveFeed,
+    searchFeeds,
 };
 
 export default feedService;

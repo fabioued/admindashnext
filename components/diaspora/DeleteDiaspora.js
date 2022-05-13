@@ -5,11 +5,11 @@ import { toast } from "react-toastify"
 import { SyncOutlined, WarningFilled } from '@ant-design/icons';
 import diasporaService from "../../services/diaspora/diasporaService";
 
-const DeleteDiaspora = (diaspora) => {
+const DeleteDiaspora = (diasporaUser) => {
     const { state, dispatch } = useContext(Context);
     const [reason, setReason] = useState("");
     const [id, setId] = useState(0);
-    const { viewing_user, confirmed_diaspora, confirmed_diaspora_count } = state;
+    const { viewing_user, diaspora, confirmed_diaspora_count } = state;
     const [loading, setLoading] = useState(false);
 
     id = viewing_user.users_id;
@@ -19,15 +19,15 @@ const DeleteDiaspora = (diaspora) => {
         try {
             setLoading(true)
             await diasporaService.deleteRecord(id);
-            let newRecords = confirmed_diaspora.filter(function (diaspora) {
+            let newRecords = diaspora.filter(function (diaspora) {
                 return diaspora.users_id != id
             });
             dispatch({
-                type: "CONFIRMED_DIASPORA",
+                type: "SET_DIASPORA",
                 payload: newRecords
             });
             dispatch({
-                type: "CONFIRMED_DIASPORA_COUNT",
+                type: "SET_DIASPORA_COUNT",
                 payload: newRecords.length
             });
 

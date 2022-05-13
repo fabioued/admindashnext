@@ -5,17 +5,16 @@ import { toast } from "react-toastify"
 import { SyncOutlined } from '@ant-design/icons';
 import diasporaService from "../../services/diaspora/diasporaService";
 
-const RejectDiaspora = (diaspora) => {
+const RejectDiaspora = (diasporaUser) => {
     const { state, dispatch } = useContext(Context);
     const [reason, setReason] = useState("");
     const [email, setEmail] = useState("");
-    const { viewing_user, confirmed_diaspora
-    } = state;
+    const { viewing_user, diaspora } = state;
     const [loading, setLoading] = useState(false);
 
     email = viewing_user.users_email;
-    reason = "The personal profile submitted doesn't meet our sign-up requirements.&#13;&#10;&#13;&#10;To gain approval, please complete one or all of the following missing information &#13;&#10;&#13;&#10;Personal picture&#13;&#10;Detailed biography&#13;&#10;&#13;&#10;After completion, notify us for re - evaluation by replying this mail.";
-
+    reason = "The personal profile submitted doesn't meet our sign-up requirements.To gain approval, please complete one or all of the following missing information Personal picture, Detailed biography. After completion, notify us for re - evaluation by replying this mail.";
+    //reason = <p>The personal profile submitted doesn't meet our sign-up requirements.</p><p>To gain approval, please complete one or all of the following missing information</p><p style='padding-left: 40px;'>Personal picture</p><p style='padding-left: 40px;'>Detailed biography</p><p>After completion, notify us for re - evaluation by replying this mail.</p><h1 style='color: #5e9ca0;'>&nbsp;</h1>"
     let message;
     let id = viewing_user.users_id;
     let name = viewing_user?.users_firstname + ' ' + viewing_user?.users_name;
@@ -37,15 +36,15 @@ const RejectDiaspora = (diaspora) => {
                 reason
             }
             await diasporaService.RejectDiaspora(payload);
-            let newRecords = confirmed_diaspora.filter(function (diaspora) {
+            let newRecords = diaspora.filter(function (diaspora) {
                 return diaspora.users_id != id
             });
             dispatch({
-                type: "CONFIRMED_DIASPORA",
+                type: "SET_DIASPORA",
                 payload: newRecords
             });
             dispatch({
-                type: "CONFIRMED_DIASPORA_COUNT",
+                type: "SET_DIASPORA_COUNT",
                 payload: newRecords.length
             });
 

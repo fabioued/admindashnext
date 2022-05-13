@@ -30,6 +30,11 @@ export default function Login() {
             };
             const login = await axios.post(`${process.env.NEXT_PUBLIC_API}users/login`, payload);
             let cookieData = JSON.stringify(login.data);
+
+            dispatch({
+                type: "SET_COOKIE",
+                payload: cookieData
+            })
             fetch("/api/login", {
                 method: "post",
                 headers: {
@@ -94,45 +99,52 @@ export default function Login() {
                                             </div>} */}
 
                                         <div className="card-body">
-                                            <form onSubmit={handleSubmit}>
-                                                <div className="edit-profile__body">
-                                                    <div className="form-group mb-20">
-                                                        <label htmlFor="username">Email Address</label>
-                                                        <input type="email" className="form-control"
-                                                            id="email" placeholder="Email"
-                                                            value={email}
-                                                            onChange={(e) => setEmail(e.target.value)}
-                                                            required
-                                                        />
-                                                    </div>
-                                                    <div className="form-group mb-15">
-                                                        <label htmlFor="password-field">password</label>
-                                                        <div className="position-relative">
-
-                                                            <input id="password-field" type={showPassword ? 'text' : 'password'} className="form-control" name="password" placeholder="password"
-                                                                value={password}
-                                                                onChange={(e) => setPassword(e.target.value)}
-                                                                required
-                                                            />
-                                                            <div className={["fa-fw text-light fs-16 field-icon toggle-password2 " + (showPassword ? "fa fa-eye-slash" : "fa fa-eye")]}
-                                                                onClick={() => setShowPassword(!showPassword)} />
-                                                        </div>
-                                                    </div>
-                                                    <div className="signUp-condition signIn-condition">
-                                                        <Link href="/forgot">
-                                                            <a>forgot password ?</a>
-                                                        </Link>
-
-                                                    </div>
-                                                    <div className="button-group d-flex pt-1 justify-content-md-start justify-content-center">
-                                                        <button className="btn btn-block btn-success btn-default btn-squared mr-15 text-capitalize lh-normal px-50 py-15 signIn-createBtn"
-                                                            disabled={!email || !password || loading}
-                                                        >
-                                                            {loading ? (<SyncOutlined spin > Loading ...</SyncOutlined>) : 'Login'}
-                                                        </button>
-                                                    </div>
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <img className="bantaba-logo" src="http://" />
                                                 </div>
-                                            </form>
+                                                <div className="col-md-12">
+                                                    <form onSubmit={handleSubmit}>
+                                                        <div className="edit-profile__body">
+                                                            <div className="form-group mb-20">
+                                                                <label htmlFor="username">Email Address</label>
+                                                                <input type="email" className="form-control"
+                                                                    id="email" placeholder="Email"
+                                                                    value={email}
+                                                                    onChange={(e) => setEmail(e.target.value)}
+                                                                    required
+                                                                />
+                                                            </div>
+                                                            <div className="form-group mb-15">
+                                                                <label htmlFor="password-field">password</label>
+                                                                <div className="position-relative">
+
+                                                                    <input id="password-field" type={showPassword ? 'text' : 'password'} className="form-control" name="password" placeholder="password"
+                                                                        value={password}
+                                                                        onChange={(e) => setPassword(e.target.value)}
+                                                                        required
+                                                                    />
+                                                                    <div className={["fa-fw text-light fs-16 field-icon toggle-password2 " + (showPassword ? "fa fa-eye-slash" : "fa fa-eye")]}
+                                                                        onClick={() => setShowPassword(!showPassword)} />
+                                                                </div>
+                                                            </div>
+                                                            <div className="signUp-condition signIn-condition">
+                                                                <Link href="/forgot">
+                                                                    <a>forgot password ?</a>
+                                                                </Link>
+
+                                                            </div>
+                                                            <div className="button-group d-flex pt-1 justify-content-md-start justify-content-center">
+                                                                <button className="btn btn-block btn-success btn-default btn-squared mr-15 text-capitalize lh-normal px-50 py-15 signIn-createBtn"
+                                                                    disabled={!email || !password || loading}
+                                                                >
+                                                                    {loading ? (<SyncOutlined spin > Loading ...</SyncOutlined>) : 'Login'}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
 
                                         </div>
                                     </div>

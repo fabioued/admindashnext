@@ -9,9 +9,9 @@ const ProtectedRoute = ({ children }) => {
     const { user } = state;
 
     useEffect(() => {
-        if (user == null) {
-            router.push('/login')
-        }
+        // if (user === null) {
+        //     router.push('/login')
+        // }
     }, [user])
 
     return (
