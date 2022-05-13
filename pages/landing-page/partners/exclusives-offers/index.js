@@ -1,7 +1,7 @@
-import InnerMenu from "../../components/Navigation/InnerMenu";
+import InnerMenu from "../../../../components/Navigation/InnerMenu";
 import { useRouter } from "next/router"
 import React, { useContext, useEffect, useState } from 'react';
-import { Context } from "../../context/index"
+import { Context } from "../../../../context/index"
 
 
 const Testimonials = () => {
