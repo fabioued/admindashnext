@@ -14,7 +14,19 @@ const initialState = {
     startups_count: 0,
     feeds_count: 0,
     current_feed: {},
+    jobs: [],
+    jobs_count: 0,
+    current_job: {},
+    blogs: [],
+    blogs_count: 0,
+    current_blog: {},
     admin_users_count: 0,
+    news: [],
+    news_count: 0,
+    current_news: {},
+    press: [],
+    press_count: 0,
+    current_press: {},
     open: false,
     modal_is_open: false,
     has_more_data: false,
@@ -70,6 +82,46 @@ const rootReducer = (state, action) => {
         case "SET_FEEDS_COUNT":
             return { ...state, feeds_count: action.payload }
 
+
+        case "SET_NEWS":
+            return { ...state, news: action.payload }
+
+
+        case "SET_CURRENT_NEWS":
+            return { ...state, current_news: action.payload }
+
+        case "SET_NEWS_COUNT":
+            return { ...state, news_count: action.payload }
+
+        case "SET_BLOGS":
+            return { ...state, blogs: action.payload }
+
+        case "SET_CURRENT_BLOG":
+            return { ...state, current_blog: action.payload }
+
+        case "SET_BLOGS_COUNT":
+            return { ...state, blogs_count: action.payload }
+
+
+        case "SET_PRESS":
+            return { ...state, press: action.payload }
+
+        case "SET_CURRENT_PRESS":
+            return { ...state, current_press: action.payload }
+
+        case "SET_PRESS_COUNT":
+            return { ...state, press_count: action.payload }
+
+
+        case "SET_JOBS":
+            return { ...state, jobs: action.payload }
+
+
+        case "SET_CURRENT_JOB":
+            return { ...state, current_job: action.payload }
+
+        case "SET_JOBS_COUNT":
+            return { ...state, jobs_count: action.payload }
 
         case "SET_ADMIN_USERS":
             return { ...state, admin_users: action.payload }

@@ -1,13 +1,21 @@
 import axios from "axios";
 
+export const dev_api = process.env.NEXT_PUBLIC_API_DEV;
+export const prod_api = process.env.NEXT_PUBLIC_API_PROD;
+
+//const api_link = dev_api;
+
+const api_link = prod_api;
+
+
 const fetchRecords = async (page, pagination, type) => {
-    const url = `${process.env.NEXT_PUBLIC_API_DEV}startups/admin/loadmore-startups/${page}/${pagination}/${type}`;
+    const url = `${api_link}startups/admin/loadmore-startups/${page}/${pagination}/${type}`;
     const response = await axios.get(url);
     return response.data;
 };
 
 const fetchSingleRecord = async (payload) => {
-    const url = `${process.env.NEXT_PUBLIC_API_DEV}startups/admin/view-startup/${payload.id}`;
+    const url = `${api_link}startups/admin/view-startup/${payload.id}`;
     const response = await axios.get(url);
     response.data["startup_name"] = payload.name;
     return response.data;
@@ -15,13 +23,13 @@ const fetchSingleRecord = async (payload) => {
 
 
 const searchStartupsRecord = async (query) => {
-    const url = `${process.env.NEXT_PUBLIC_API_DEV}startups/admin/search`;
+    const url = `${api_link}startups/admin/search`;
     const response = await axios.post(url, { query });
     return response.data;
 };
 const loadMoreRecords = async (payload) => {
     const { type, page, pagination } = payload;
-    const url = `${process.env.NEXT_PUBLIC_API_DEV}startups/admin/loadmore-startups/${page}/${pagination}/${type}`;
+    const url = `${api_link}startups/admin/loadmore-startups/${page}/${pagination}/${type}`;
     const response = await axios.get(url);
     return response.data;
 };
@@ -32,7 +40,7 @@ const fetchLastMonthRecords = async (data) => {
         page: data.page,
         pagination: data.pagination,
     };
-    const url = `${process.env.NEXT_PUBLIC_API_DEV}startups/admin/filter`;
+    const url = `${api_link}startups/admin/filter`;
     const response = await axios.post(url, payload);
     return response.data;
 };
@@ -41,14 +49,14 @@ const deleteRecord = async (id) => {
     const payload = {
         id,
     };
-    const url = `${process.env.NEXT_PUBLIC_API_DEV}startups/admin/delete-startup`;
+    const url = `${api_link}startups/admin/delete-startup`;
     const response = await axios.post(url, payload);
     response.data["startup_id"] = id;
     return response.data;
 };
 
 const rejectStartup = async (payload) => {
-    const url = `${process.env.NEXT_PUBLIC_API_DEV}startups/admin/reject-startup`;
+    const url = `${api_link}startups/admin/reject-startup`;
     const response = await axios.post(url, payload);
     // if (response.data.statusMsg) {
     //     alert("You have been rejected successfully.");
@@ -65,7 +73,7 @@ const fetchStartupDateRange = async (payload) => {
         startDate,
         endDate,
     };
-    const url = `${process.env.NEXT_PUBLIC_API_DEV}startups/admin/filter`;
+    const url = `${api_link}startups/admin/filter`;
     const response = await axios.post(url, data);
 
     if (response.data.statusMsg !== "Error") {
@@ -77,7 +85,7 @@ const fetchStartupDateRange = async (payload) => {
 };
 
 const confirmStartup = async (id) => {
-    const url = `${process.env.NEXT_PUBLIC_API_DEV}startups/admin/confirm-startup`;
+    const url = `${api_link}startups/admin/confirm-startup`;
     const payload = {
         id,
     };

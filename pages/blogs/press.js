@@ -2,7 +2,7 @@ import InnerMenu from "../../components/Navigation/InnerMenu";
 import { useRouter } from "next/router"
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from "../../context/index"
-import BlogCard from "../../components/blogs/BlogCard"
+import PressCard from "../../components/blogs/PressCard"
 import blogsService from "../../services/blogs/blogsService";
 import BreadCrumb from "../../components/Navigation/Breadcrumb"
 import BreadcrumbButton from "../../components/Navigation/BreadcrumbButton";
@@ -15,10 +15,10 @@ import { toast } from "react-toastify"
 import ProtectedRoute from "../../components/routes/protectedRoute"
 
 
-const Blogs = () => {
+const Press = () => {
     const { state, dispatch } = useContext(Context);
-    let { current_page, blogs, blogs_count, page, pagination,
-        loading, modal_is_open, modal_name, modal_title, current_blog
+    let { current_page, press, press_count, page, pagination,
+        loading, modal_is_open, modal_name, modal_title, current_press
     } = state;
     const [buttonLoading, setButtonLoading] = useState(false);
     let [lang, setLang] = useState('en');
@@ -29,19 +29,19 @@ const Blogs = () => {
                 type: "SET_LOADING",
                 payload: true
             });
-            const data = await blogsService.fetchAll();
+            const data = await blogsService.fetchAllPress();
             dispatch({
-                type: "SET_BLOGS",
+                type: "SET_PRESS",
                 payload: data
             });
             dispatch({
-                type: "SET_BLOGS_COUNT",
+                type: "SET_PRESS_COUNT",
                 payload: data.length
             });
 
             dispatch({
                 type: "SET_CURRENT_PAGE",
-                payload: 'all-blogs'
+                payload: 'all-press'
             });
             dispatch({
                 type: "SET_LOADING",
@@ -69,17 +69,17 @@ const Blogs = () => {
     const deleteBlog = async () => {
         try {
             setButtonLoading(true)
-            let id = current_blog.id;
+            let id = current_press.id;
             await blogsService.deleteBlog(id);
             let newRecords = blogs.filter(function (blog) {
                 return blog.id != id
             });
             dispatch({
-                type: "SET_BLOGS",
+                type: "SET_PRESS",
                 payload: newRecords
             });
             dispatch({
-                type: "SET_BLOGS_COUNT",
+                type: "SET_PRESS_COUNT",
                 payload: newRecords.length
             });
 
@@ -95,7 +95,7 @@ const Blogs = () => {
                 payload: ""
             });
 
-            toast.success('The blog has been deleted successfully !!!', {
+            toast.success('The press has been deleted successfully !!!', {
                 position: toast.POSITION.TOP_RIGHT
             })
 
@@ -118,18 +118,19 @@ const Blogs = () => {
                     <div className="row">
                         <div className="col-lg-8">
                             <div className="breadcrumb-main user-member justify-content-sm-between ">
-                                <BreadCrumb title={"Manange Blogs"} count={blogs_count} />
+                                <BreadCrumb title={"Manange Press"} count={press_count} />
                                 {/* <BreadcrumbButton title={"New Blog"} /> */}
                             </div>
                         </div>
                     </div>
                     <div className="bookmark-page__list">
                         <div className="row mx-n1">
-                            {blogs && blogs.length > 0 && (blogs.map((blog, index) => {
-                                return <BlogCard key={index} blog={blog} />
+                            {press && press.length > 0 && (press.map((press_article, index) => {
+                                return <PressCard key={index} blog={press_article
+                                } />
                             }))}
                             {
-                                blogs.length <= 0 && (<EmptyCard text="No Records Found" />)
+                                press.length <= 0 && (<EmptyCard text="No Records Found" />)
                             }
                         </div>
                     </div>
@@ -148,16 +149,16 @@ const Blogs = () => {
                             <div className="container justify-content-center">
                                 <div className="row ">
                                     <div className="col-md-12 pb-md-30">
-                                        <div className="html-text" dangerouslySetInnerHTML={{ __html: current_blog.content }} />
+                                        <div className="html-text" dangerouslySetInnerHTML={{ __html: current_press.content }} />
                                         <div className="row py-md-30">
                                             <div className="col-md-6">keywords:
-                                                {current_blog.keywords && current_blog.keywords.length > 0 && (current_blog.keywords.map((keyword, index) => {
+                                                {current_press.keywords && current_press.keywords.length > 0 && (current_press.keywords.map((keyword, index) => {
                                                     return <Tag color="purple" className="m-2">{keyword.name}</Tag>
                                                 }))}
                                             </div>
                                             <div className="col-md-6">Tags:
 
-                                                {current_blog.tags && current_blog.tags.length > 0 && (current_blog.tags.map((tag, index) => {
+                                                {current_press.tags && current_press.tags.length > 0 && (current_press.tags.map((tag, index) => {
                                                     return <Tag color="cyan" className="m-2">{tag.name}</Tag>
                                                 }))}
                                             </div>
@@ -212,4 +213,4 @@ const Blogs = () => {
     );
 };
 
-export default Blogs;
+export default Press;

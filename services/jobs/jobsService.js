@@ -8,11 +8,10 @@ export const prod_api = process.env.NEXT_PUBLIC_API_PROD;
 const api_link = prod_api;
 
 
-
-export const fetchFeeds = async (payload) => {
-    const { type, page, pagination, lang } = payload;
+export const fetchJobs = async (payload) => {
+    const { pagination, lang } = payload;
     let lowercase = lang.toLowerCase();
-    const url = `${api_link}feeds/admin/loadmore-feeds/${page}/${pagination}/${type}/${lowercase}`;
+    const url = `${api_link}jobs/all/${lowercase}`;
     const response = await axios.get(url);
     return response.data;
 };
@@ -29,40 +28,19 @@ const searchFeeds = async (query) => {
     const response = await axios.post(url, { query });
     return response.data;
 };
-const deleteFeed = async (id) => {
-    const url = `${api_link}feeds/admin/delete/${id}`;
+const deleteJob = async (id) => {
+    const url = `${api_link}jobs/${id}/delete`;
     const response = await axios.get(url);
     response.data["id"] = id;
     return response.data;
 };
 
-const rejectFeed = async (id) => {
-    const url = `${api_link}feeds/admin/reject-feed`;
-    const payload = {
-        id,
-    };
-    const response = await axios.post(url, payload);
-    response.data["id"] = id;
-    return response.data;
-};
 
-const approveFeed = async (id) => {
-    const url = `${api_link}feeds/admin/confirm-feed`;
-    const payload = {
-        id,
-    };
-    const response = await axios.post(url, payload);
-    response.data["id"] = id;
-    return response.data;
-};
-
-const feedService = {
-    fetchFeeds,
+const jobsService = {
+    fetchJobs,
     loadMoreRecords,
-    deleteFeed,
-    rejectFeed,
-    approveFeed,
+    deleteJob,
     searchFeeds,
 };
 
-export default feedService;
+export default jobsService;

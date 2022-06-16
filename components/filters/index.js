@@ -4,6 +4,8 @@ import { Context } from "../../context/index"
 import diasporaService from "../../services/diaspora/diasporaService";
 import startupService from "../../services/startups/startupsService";
 import feedService from "../../services/feeds/feedService";
+import jobsService from "../../services/jobs/jobsService";
+import newsService from "../../services/news/newsService";
 import { DownOutlined, CaretDownOutlined } from '@ant-design/icons';
 import { toast } from "react-toastify"
 import { Circle } from 'react-feather';
@@ -56,6 +58,49 @@ const Filter = ({ filterType }) => {
                     payload: data.count
                 });
                 feeds_count > 0 ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
+                dispatch({
+                    type: "SET_LOADING",
+                    payload: false
+                });
+            } else if (current_page === 'all-jobs') {
+                dispatch({
+                    type: "SET_LOADING",
+                    payload: true
+                });
+                page = 0;
+                const data = await jobsService.fetchJobs({
+                    pagination, lang
+                });
+                dispatch({
+                    type: "SET_JOBS",
+                    payload: data.jobs
+                });
+                dispatch({
+                    type: "SET_JOBS_COUNT",
+                    payload: data.jobs.length
+                });
+                dispatch({
+                    type: "SET_LOADING",
+                    payload: false
+                });
+            }
+            else if (current_page === 'all-news') {
+                dispatch({
+                    type: "SET_LOADING",
+                    payload: true
+                });
+                page = 0;
+                const data = await newsService.fetchNews({
+                    pagination, lang
+                });
+                dispatch({
+                    type: "SET_NEWS",
+                    payload: data.news
+                });
+                dispatch({
+                    type: "SET_NEWS_COUNT",
+                    payload: data.news.length
+                });
                 dispatch({
                     type: "SET_LOADING",
                     payload: false
@@ -131,6 +176,30 @@ const Filter = ({ filterType }) => {
                 set_count_type = 'SET_FEEDS_COUNT';
                 set_count_payload = records.count;
             }
+
+            else if (current_page === 'all-jobs') {
+                records = await jobsService.fetchJobs({
+                    pagination, lang
+                });
+                set_data_type = 'SET_JOBS';
+                set_data_payload = records.jobs;
+                set_count_type = 'SET_JOBS_COUNT';
+                set_count_payload = records.jobs.length;
+            }
+
+
+            else if (current_page === 'all-news') {
+                records = await newsService.fetchNews({
+                    pagination, lang
+                });
+                set_data_type = 'SET_NEWS';
+                set_data_payload = records.news;
+                set_count_type = 'SET_NEWS_COUNT';
+                set_count_payload = records.news.length;
+            }
+
+
+
         }
         else if (filterType === 'DateRange') {
             if (range.length) {

@@ -9,7 +9,7 @@ const ViewStartup = () => {
     const { state, dispatch } = useContext(Context);
     const startup = state.viewing_startup;
 
-
+    //console.log({ startup })
     return (
         <>
             <div className="container">
@@ -100,11 +100,11 @@ const ViewStartup = () => {
                             </div>
                             <div className="card-body about-content">
                                 <p className="card-text"> {
-                                    startup.about && (<p className="card-text">{startup.traction}</p>)
+                                    startup.overview.traction && (<p className="card-text">{startup.overview.traction}</p>)
                                 }
 
                                     {
-                                        !startup.lenght && (<p className="card-text">No Traction</p>)
+                                        !startup.overview.traction && (<p className="card-text">No Traction</p>)
                                     }</p>
                             </div>
                         </div>

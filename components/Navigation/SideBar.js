@@ -1,11 +1,11 @@
 import { Menu } from 'antd';
 import Link from "next/link";
-import { Home, LogOut, Briefcase, Layout, Users, Radio, Layers, List, User } from 'react-feather';
+import { Home, LogOut, Briefcase, Layout, Users, Radio, Disc, Layers, List, User, Link2 } from 'react-feather';
 import { useState, useEffect, useContext } from 'react';
 import { Context } from '../../context';
 import { useRouter } from "next/router";
 
-import { RocketOutlined, UserSwitchOutlined, WindowsOutlined, BarsOutlined } from '@ant-design/icons';
+import { RocketOutlined, LinkOutlined, WindowsOutlined, BarsOutlined } from '@ant-design/icons';
 
 const SideBar = () => {
     const [current, setCurrent] = useState('');
@@ -77,7 +77,7 @@ const SideBar = () => {
                             <li className="sidebar_menu_item" key="/startups/non-confirmed-startups" onClick={e => setCurrent(e.key)}>
                                 <Link href="/startups/non-confirmed-startups">
                                     <a className={(current === '/startups/non-confirmed-startups' || current === '/startups/confirmed-startups') ? 'active' : ''}>
-                                        <RocketOutlined className="nav-icon" />
+                                        <Disc className="nav-icon" />
                                         <span className="menu-text">Startups</span>
                                     </a>
                                 </Link>
@@ -91,7 +91,7 @@ const SideBar = () => {
                                     </a>
                                 </Link>
                             </li>
-                            {/* 
+
                             <li className="sidebar_menu_item" key="/blogs" onClick={e => setCurrent(e.key)}>
                                 <Link href="/blogs">
                                     <a className={current === '/blogs' ? 'active' : ''}>
@@ -117,7 +117,7 @@ const SideBar = () => {
                                         <span className="menu-text">Jobs</span>
                                     </a>
                                 </Link>
-                            </li>*/}
+                            </li>
                             <li className="sidebar_menu_item" key="/users" onClick={e => setCurrent(e.key)}>
                                 <Link href="/users">
                                     <a className={current === '/users' ? 'active' : ''}>
@@ -126,6 +126,15 @@ const SideBar = () => {
                                     </a>
                                 </Link>
                             </li>
+
+                            {/* <li className="sidebar_menu_item" key="/urls-shortner" onClick={e => setCurrent(e.key)}>
+                                <Link href="/urls-shortner">
+                                    <a className={current === '/urls-shortner' ? 'active' : ''}>
+                                        <Link2 className="nav-icon" />
+                                        <span className="menu-text">URLs shortner</span>
+                                    </a>
+                                </Link>
+                            </li> */}
                             <li className="sidebar_menu_item" onClick={logOut}>
                                 <Link href="#" >
                                     <a >

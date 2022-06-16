@@ -6,13 +6,13 @@ export const prod_api = process.env.NEXT_PUBLIC_API_PROD;
 //const api_link = dev_api;
 
 const api_link = prod_api;
+//const api_link = dev_api;
 
 
-
-export const fetchFeeds = async (payload) => {
-    const { type, page, pagination, lang } = payload;
+export const fetchNews = async (payload) => {
+    const { pagination, lang } = payload;
     let lowercase = lang.toLowerCase();
-    const url = `${api_link}feeds/admin/loadmore-feeds/${page}/${pagination}/${type}/${lowercase}`;
+    const url = `${api_link}news/all/pagination/${pagination}/${lowercase}`;
     const response = await axios.get(url);
     return response.data;
 };
@@ -29,8 +29,8 @@ const searchFeeds = async (query) => {
     const response = await axios.post(url, { query });
     return response.data;
 };
-const deleteFeed = async (id) => {
-    const url = `${api_link}feeds/admin/delete/${id}`;
+const deleteNews = async (id) => {
+    const url = `${api_link}news/${id}/delete`;
     const response = await axios.get(url);
     response.data["id"] = id;
     return response.data;
@@ -56,13 +56,13 @@ const approveFeed = async (id) => {
     return response.data;
 };
 
-const feedService = {
-    fetchFeeds,
+const newsService = {
+    fetchNews,
     loadMoreRecords,
-    deleteFeed,
+    deleteNews,
     rejectFeed,
     approveFeed,
     searchFeeds,
 };
 
-export default feedService;
+export default newsService;
