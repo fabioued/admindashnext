@@ -44,7 +44,7 @@ const InnerMenu = ({ links }) => {
                         {links.map(function (item, index) {
                             return (
                                 <div>
-                                    <Link key={index} onClick={e => {
+                                    <Link key={'a' + index} onClick={e => {
                                         setCurrent(e.key);
 
                                         dispatch({
@@ -52,8 +52,7 @@ const InnerMenu = ({ links }) => {
                                             payload: 0
                                         });
                                     }} href={item.link}>
-                                        <a className={`${current === item.link ? 'active' : ''} inner-menu-button`}>{item
-                                            .name}</a></Link>
+                                        <a className={`${current === item.link ? 'active' : ''} inner-menu-button`}>{item.name}</a></Link>
                                 </div>
                             )
                         })}

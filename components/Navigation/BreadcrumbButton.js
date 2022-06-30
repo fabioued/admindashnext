@@ -9,7 +9,7 @@ const BreadcrumbButton = ({ title, link }) => {
         <>
             <div className="action-btn">
                 <button onClick={() => newFunction()} type="button" className="btn px-15 btn-success">
-                    <i class="las la-plus fs-16"></i>{title}
+                    <i className="las la-plus fs-16"></i>{title}
                 </button>
             </div>
         </>

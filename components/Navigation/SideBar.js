@@ -58,14 +58,14 @@ const SideBar = () => {
                                     </a>
                                 </Link>
                             </li>
-                            {/* <li className="sidebar_menu_item" key="/landing-page" onClick={e => setCurrent(e.key)}>
+                            <li className="sidebar_menu_item" key="/landing-page" onClick={e => setCurrent(e.key)}>
                                 <Link href="/landing-page">
                                     <a className={current === '/landing-page' ? 'active' : ''}>
                                         <Layout className="nav-icon" />
                                         <span className="menu-text">Landing Page</span>
                                     </a>
                                 </Link>
-                            </li> */}
+                            </li>
                             <li className="sidebar_menu_item" key="/diaspora" onClick={e => setCurrent(e.key)}>
                                 <Link href="/diaspora/non-confirmed-diaspora">
                                     <a className={(current === '/diaspora/non-confirmed-diaspora' || current === '/diaspora/confirmed-diaspora') ? 'active' : ''}>

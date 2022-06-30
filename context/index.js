@@ -26,18 +26,39 @@ const initialState = {
     current_news: {},
     press: [],
     press_count: 0,
+    groups: [],
+    groups_count: 0,
+    nonDiaspora: [],
+    nonDiaspora_count: 0,
     current_press: {},
+    testimonials: [],
+    testimonials_count: 0,
+    partners: [],
+    partners_count: 0,
+    members: [],
+    members_count: 0,
+    newsletter: [],
+    newsletter_count: 0,
+    referrals: [],
+    referrals_count: 0,
     open: false,
     modal_is_open: false,
     has_more_data: false,
     total_count: 0,
+    contacts: [],
+    contacts_count: 0,
+    current_contact_message: '',
     loading: true,
+    urls: [],
+    link_info_visible: false,
+    urls_count: 0,
     modal_name: '',
     modal_title: '',
     viewing_user: {},
     viewing_startup: {},
     page: 0,
     current_page: '',
+    errors: null,
     pagination: 100,
 }
 
@@ -120,8 +141,81 @@ const rootReducer = (state, action) => {
         case "SET_CURRENT_JOB":
             return { ...state, current_job: action.payload }
 
+
         case "SET_JOBS_COUNT":
             return { ...state, jobs_count: action.payload }
+
+        case "SET_TESTIMONIALS":
+            return { ...state, testimonials: action.payload }
+
+        case "SET_TESTIMONIALS_COUNT":
+            return { ...state, testimonials_count: action.payload }
+
+        case "SET_PARTNERS":
+            return { ...state, partners: action.payload }
+
+        case "SET_PARTNERS_COUNT":
+            return { ...state, partners_count: action.payload }
+
+
+        case "SET_CONTACTS":
+            return { ...state, contacts: action.payload }
+
+        case "SET_CONTACTS_COUNT":
+            return { ...state, contacts_count: action.payload }
+
+        case "SET_CURRENT_CONTACT_MESSAGE":
+            return { ...state, current_contact_message: action.payload }
+
+
+        case "SET_REFERRALS":
+            return { ...state, referrals: action.payload }
+
+        case "SET_REFERRALS_COUNT":
+            return { ...state, referrals_count: action.payload }
+
+
+        case "SET_MEMBERS":
+            return { ...state, members: action.payload }
+
+        case "SET_MEMBERS_COUNT":
+            return { ...state, members_count: action.payload }
+
+        case "SET_GROUPS":
+            return { ...state, groups: action.payload }
+
+        case "SET_GROUPS_COUNT":
+            return { ...state, groups_count: action.payload }
+
+        case "SET_NONDIASPORA":
+            return { ...state, nonDiaspora: action.payload }
+
+        case "SET_NONDIASPORA_COUNT":
+            return { ...state, nonDiaspora_count: action.payload }
+
+
+        case "SET_NEWSLETTER":
+            return { ...state, newsletter: action.payload }
+
+        case "SET_NEWSLETTER_COUNT":
+            return { ...state, newsletter_count: action.payload }
+
+
+        case "SET_URLS":
+            return { ...state, urls: action.payload }
+
+
+        case "SET_URLS_COUNT":
+            return { ...state, urls_count: action.payload }
+
+
+        case "SET_ERRORS":
+            return { ...state, errors: action.payload }
+
+
+        case "SET_LinkInfo_VISIBLE":
+            return { ...state, link_info_visible: action.payload }
+
 
         case "SET_ADMIN_USERS":
             return { ...state, admin_users: action.payload }

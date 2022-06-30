@@ -9,12 +9,12 @@ import landingPageService from "../../../services/landing-page/landingPageServic
 import { toast } from "react-toastify"
 import moment from 'moment';
 
-const Newsletter = () => {
+const Referrals = () => {
 
     const { state, dispatch } = useContext(Context);
     const [modalTitle, setModalTitle] = useState('');
     const {
-        loading, newsletter, newsletter_count
+        loading, referrals, referrals_count
     } = state;
     const { current_page } = state;
 
@@ -25,15 +25,15 @@ const Newsletter = () => {
 
     const fechtAll = async () => {
 
-        const data = await landingPageService.fetchAllNewsletters();
+        const data = await landingPageService.fetchAllReferrals();
 
         dispatch({
-            type: "SET_NEWSLETTER_COUNT",
+            type: "SET_REFERRALS_COUNT",
             payload: data.count
         });
         dispatch({
-            type: "SET_NEWSLETTER",
-            payload: data.signups
+            type: "SET_REFERRALS",
+            payload: data.referrals
         });
 
         dispatch({
@@ -58,14 +58,14 @@ const Newsletter = () => {
         })();
     }, []);
 
-    const deleteRecord = async (email) => {
+    const deleteRecord = async (id) => {
 
         try {
             dispatch({
                 type: "SET_LOADING",
                 payload: true
             });
-            await landingPageService.deleteNewsletterRecord(email);
+            await landingPageService.deleteReferralRecord(id);
             fechtAll();
 
             dispatch({
@@ -84,8 +84,6 @@ const Newsletter = () => {
             })
 
         }
-
-
     }
 
     return (
@@ -95,7 +93,7 @@ const Newsletter = () => {
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="breadcrumb-main user-member justify-content-sm-between ">
-                            <BreadCrumb title={"Newsletters"} count={newsletter_count} />
+                            <BreadCrumb title={"Referrals"} count={referrals_count} />
                         </div>
                     </div>
 
@@ -109,13 +107,16 @@ const Newsletter = () => {
                                         <tr className="userDatatable-header">
 
                                             <th>
-                                                <span className="userDatatable-title">Name</span>
+                                                <span className="userDatatable-title">User Id</span>
                                             </th>
                                             <th>
-                                                <span className="userDatatable-title">Email</span>
+                                                <span className="userDatatable-title">Username</span>
                                             </th>
                                             <th>
-                                                <span className="userDatatable-title">Category</span>
+                                                <span className="userDatatable-title">User Type</span>
+                                            </th>
+                                            <th>
+                                                <span className="userDatatable-title">Count</span>
                                             </th>
                                             <th>
                                                 <span className="userDatatable-title">Date</span>
@@ -126,35 +127,42 @@ const Newsletter = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {newsletter && newsletter_count > 0 && newsletter.map(
-                                            function (signup, index) {
+
+
+                                        {referrals && referrals_count > 0 && referrals.map(
+                                            function (referral, index) {
                                                 return (
 
                                                     <tr key={index}>
                                                         <td>
                                                             <div className="userDatatable-content">
-                                                                {signup.name}
+                                                                {referral.user_id}
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div className="userDatatable-content">
-                                                                {signup.email}
+                                                                {referral.username}
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div className="userDatatable-content">
-                                                                {signup.category === 'diaspora' ? <span className="bg-opacity-success  color-success rounded-pill userDatatable-content-status active"> {signup.category}</span> : <span className="bg-opacity-warning color-warning rounded-pill userDatatable-content-status active"> {signup.category}</span>}
+                                                                <span className="bg-opacity-success  color-success rounded-pill userDatatable-content-status active">{referral.user_type === 1 ? 'Diaspora' : 'Startup'}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="userDatatable-content">
+                                                                {referral.referrals_count}
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div className="userDatatable-content d-inline-block">
-                                                                {formatDate(signup?.created_at)}
+                                                                {formatDate(referral?.created_at)}
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <ul className="orderDatatable_actions mb-0 d-flex flex-wrap">
                                                                 <li>
-                                                                    <a href="#" className="remove" onClick={() => deleteRecord(signup.email)}>
+                                                                    <a href="#" className="remove" onClick={() => deleteRecord(referral.id)}>
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-trash-2"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><line x1={10} y1={11} x2={10} y2={17} /><line x1={14} y1={11} x2={14} y2={17} /></svg></a>
                                                                 </li>
                                                             </ul>
@@ -165,10 +173,11 @@ const Newsletter = () => {
                                                 );
                                             }
                                         )}
-                                        {newsletter && newsletter_count < 1 && (
+
+                                        {referrals && referrals_count < 1 && (
                                             <tr>
                                                 <td colSpan="7" className="text-center">
-                                                    No Signups
+                                                    No Referrals
                                                 </td>
                                             </tr>
                                         )}
@@ -184,4 +193,4 @@ const Newsletter = () => {
     );
 };
 
-export default Newsletter;
+export default Referrals;

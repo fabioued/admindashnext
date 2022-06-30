@@ -18,24 +18,24 @@ const MemberCard = ({ team }) => {
                     <div className="card-body text-center p-30">
                         <div className="account-profile">
                             <div className="ap-img d-flex justify-content-center">
-                                <img className="ap-img__main rounded-circle mb-20 bg-opacity-primary wh-150" src="https://ourbantaba.com/_next/image/?url=https%3A%2F%2Fres.cloudinary.com%2Fbantaba%2Fimage%2Fupload%2Fv1648829995%2FPlatform%2520Assets%2Fteam%2FNoufayCloseUp500Transparent_ndk3zq.png&w=3840&q=75" alt="profile" />
+                                <img className="ap-img__main rounded-circle mb-20 bg-opacity-primary wh-150" src={team.image} alt="profile" />
                             </div>
                             <div className="ap-nameAddress pb-3">
-                                <h6 className="ap-nameAddress__title">Garry Sobars </h6>
-                                <p className="ap-nameAddress__subTitle fs-13 pt-1 m-0">Founder &amp; CEO -  Linkedin</p>
+                                <h6 className="ap-nameAddress__title">{team.name} <span className="mx-2 atbd-tag tag-success tag-transparented">{team.lang === 'en' ? 'English' : 'French'}</span></h6>
+                                <p className="ap-nameAddress__subTitle fs-13 pt-1 m-0">{team.position}</p>
                             </div>
                             <ul className="db-social-parent mb-0 justify-content-center">
-                                <li className="db-social-parent__item"><a className="color-facebook hover-facebook wh-38 fs-16 rounded-circle" href="#"> <Mail /></a></li>
-                                <li className="db-social-parent__item"><a className="color-twitter hover-twitter wh-38 fs-16 rounded-circle" href="#"> <Linkedin /></a></li>
+                                <li className="db-social-parent__item"><a className="text-center color-facebook hover-facebook wh-38 fs-16 rounded-circle" href="#"> <Mail /> {team.email}</a></li>
+                                <li className="db-social-parent__item  my-5"><a className="color-twitter hover-twitter wh-38 fs-16 rounded-circle" href={team.linkedin} target="_blank"> <Linkedin /> Linkedin</a></li>
                             </ul>
-                            <div className="ap-button account-profile-cards__button button-group d-flex justify-content-center flex-wrap pt-20">
+                            {/* <div className="ap-button account-profile-cards__button button-group d-flex justify-content-center flex-wrap pt-20">
                                 <button type="button" className="feed-reject text-capitalize px-25 shadow2 radius-md">
                                     Edit
                                 </button>
                                 <button type="button" className="feed-delete text-capitalize px-25 shadow2 radius-md">
                                     Delete
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

@@ -30,7 +30,7 @@ const GroupCard = ({ title }) => {
 
                         </div>
                         <div className="bookmark__button d-flex mt-30 flex-wrap">
-                            <div className="row">
+                            {/* <div className="row">
                                 <div className="col-md-4">
                                     <button className="btn btn-success btn-sm btn-squared border-0 " data-toggle="modal" data-target="#taskModal2">
                                         View
@@ -46,7 +46,7 @@ const GroupCard = ({ title }) => {
                                         Delete
                                     </button>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
