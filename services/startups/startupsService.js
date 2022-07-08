@@ -3,10 +3,26 @@ import axios from "axios";
 export const dev_api = process.env.NEXT_PUBLIC_API_DEV;
 export const prod_api = process.env.NEXT_PUBLIC_API_PROD;
 
+export const vault_api_dev = 'https://vault-dev-api.ourbantaba.com/';
+
 //const api_link = dev_api;
 
 const api_link = prod_api;
 
+
+const fetchAllVaults = async () => {
+    const url = `${vault_api_dev}vaults`;
+    const response = await axios.get(url);
+    return response.data;
+}
+
+
+
+const updateVault = async (data) => {
+    const url = `${vault_api_dev}vaults/`;
+    const response = await axios.patch(url, data);
+    return response.data;
+};
 
 const fetchRecords = async (page, pagination, type) => {
     const url = `${api_link}startups/admin/loadmore-startups/${page}/${pagination}/${type}`;
@@ -103,7 +119,9 @@ const diasporaService = {
     fetchLastMonthRecords,
     deleteRecord,
     rejectStartup,
-    searchStartupsRecord
+    searchStartupsRecord,
+    fetchAllVaults,
+    updateVault
 };
 
 export default diasporaService;

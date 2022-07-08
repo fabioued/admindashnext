@@ -126,14 +126,14 @@ const News = () => {
 
     return (
         <>
-            {/* <InnerMenu links={Links.newsLinks} /> */}
+            <InnerMenu links={Links.newsLinks} />
             {loading && (<PageLoader />)}
             {!loading && (
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-8">
                             <div className="breadcrumb-main user-member justify-content-sm-between ">
-                                {/* <BreadCrumb title={"Manage All News"} count={news_count} /> */}
+                                <BreadCrumb title={"Manage All News"} count={news_count} />
                             </div>
                         </div>
                         <div className="col-lg-4">

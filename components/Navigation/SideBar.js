@@ -127,14 +127,14 @@ const SideBar = () => {
                                 </Link>
                             </li>
 
-                            {/* <li className="sidebar_menu_item" key="/urls-shortner" onClick={e => setCurrent(e.key)}>
+                            <li className="sidebar_menu_item" key="/urls-shortner" onClick={e => setCurrent(e.key)}>
                                 <Link href="/urls-shortner">
                                     <a className={current === '/urls-shortner' ? 'active' : ''}>
                                         <Link2 className="nav-icon" />
                                         <span className="menu-text">URLs shortner</span>
                                     </a>
                                 </Link>
-                            </li> */}
+                            </li>
                             <li className="sidebar_menu_item" onClick={logOut}>
                                 <Link href="#" >
                                     <a >

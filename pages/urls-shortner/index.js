@@ -15,7 +15,7 @@ import PageLoader from '../../components/loaders/PageLoader'
 const UrlShortner = () => {
 
     const { state, dispatch } = useContext(Context);
-    const { urls, urls_count, link_info_visible, loading } = state;
+    const { urls, urls_count, link_info_visible, loading, newShortenedUrl } = state;
 
     useEffect(() => {
         (async () => {
@@ -45,6 +45,15 @@ const UrlShortner = () => {
         })();
     }, []);
 
+    const copyToClipboard = (shortenedUrl) => {
+        navigator.clipboard.writeText(shortenedUrl);
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function () {
+            x.className = x.className.replace("show", "");
+        }, 3000);
+    };
+
     return (
         <ProtectedRoute>
             {loading && (<PageLoader />)}
@@ -61,17 +70,18 @@ const UrlShortner = () => {
                         <div className="contact-list-wrap mb-25">
                             <div className="contact-list bg-white radius-xl w-100">
                                 <Toast />
-                                <SearchInput />
-                                {link_info_visible && <div className="contact-list radius-xl w-100 shortnerResult">
-                                    <div className="row m-50 ">
+
+                                {link_info_visible && <div className="contact-list radius-xl  shortnerResult">
+                                    <div className="row m-2 ">
                                         <div className="col-md-10">
-                                            <p>Https://Ourbantaba.com/Urlsdd</p>
+                                            <p>{newShortenedUrl}</p>
                                         </div>
                                         <div className="col-md-2">
-                                            <button type="submit" className="btn btn-info ml-10  btn-lg px-20"><CopyFilled /> Copy</button>
+                                            <button onClick={() => copyToClipboard(newShortenedUrl)} className="btn btn-info ml-10  btn-lg px-20"><CopyFilled /> Copy</button>
                                         </div>
                                     </div>
                                 </div>}
+                                <SearchInput />
 
                                 <UrlList urls={urls} />
                             </div>

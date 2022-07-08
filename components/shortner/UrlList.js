@@ -70,7 +70,7 @@ const UrlList = () => {
                 <span className="userDatatable-title">Date</span>
               </th>
               <th data-type="html" data-name="position">
-                <span className="userDatatable-title">Action</span>
+                <span className="userDatatable-title">Actions</span>
               </th>
             </tr>
           </thead>
@@ -91,17 +91,17 @@ const UrlList = () => {
                       </a>
                     </td>
                     <td className="px-6 py-4">
-                      <a href={url.shortenedUrl} className="text-blue-600">
+                      <a href={url.shortenedUrl} target="_blank" className="text-blue-600">
                         {url.shortenedUrl}
                       </a>
                     </td>
                     <td className="px-6 py-4">{url.clicks}</td>
                     <td className="px-6 py-4">{url.createdAt.split("T")[0]}</td>
                     <td className="px-6 py-4 flex">
-                      <button onClick={() => copyToClipboard(url.shortenedUrl)}>
+                      <button className="copyButton mx-2" onClick={() => copyToClipboard(url.shortenedUrl)}>
                         <CopyFilled className="copyIcon" />
                       </button>
-                      <button onClick={() => removeLink(url.id)}>
+                      <button className="deleteButton" onClick={() => removeLink(url.id)}>
                         <DeleteFilled className="copyIcon" />
                       </button>
                     </td>

@@ -120,6 +120,9 @@ const Feed = ({ feed, hideApprove, hideReject, hideDelete }) => {
                                     {feed.user && <Tag icon={<TranslationOutlined className="feed-icon-pending" />} color="gold">{feed.lang === 'en' ? "Englsih" : "French"}</Tag>}
                                 </div>
                                 <div className="col-md-6 mb-3" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                    {feed.user.confirmed === 0 && <Tag icon={< UserOutlined className="feed-icon-hidden" />} color="red">Non Approved User</Tag>}
+                                    {feed.user.confirmed === 1 && <Tag icon={<UserOutlined className="feed-icon-public" />} color="purple">Approved User</Tag>}
+
                                     {feed.user && feed.user.type === 1 && <Tag icon={<UserOutlined className="feed-icon-diaspora" />} color="cyan">Diaspora</Tag>}
                                     {feed.user && feed.user.type === 2 && <Tag icon={<RocketOutlined className="feed-icon-startup" />} color="geekblue">Startup</Tag>}
 

@@ -30,7 +30,7 @@ const confirmedStartups = () => {
 
     const [buttonLoading, setButtonLoading] = useState(false);
 
-    let type = 0;
+    let type = 1;
 
     useEffect(() => {
         (async () => {

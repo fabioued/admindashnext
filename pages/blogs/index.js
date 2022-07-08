@@ -119,7 +119,6 @@ const Blogs = () => {
                         <div className="col-lg-8">
                             <div className="breadcrumb-main user-member justify-content-sm-between ">
                                 <BreadCrumb title={"Manange Blogs"} count={blogs_count} />
-                                {/* <BreadcrumbButton title={"New Blog"} /> */}
                             </div>
                         </div>
                     </div>

@@ -48,6 +48,7 @@ const initialState = {
     contacts: [],
     contacts_count: 0,
     current_contact_message: '',
+    current_contact: null,
     loading: true,
     urls: [],
     link_info_visible: false,
@@ -60,6 +61,11 @@ const initialState = {
     current_page: '',
     errors: null,
     pagination: 100,
+    newShortenedUrl: '',
+    vaults: [],
+    vaults_count: 0,
+    current_vault: null,
+    current_vault_field: ''
 }
 
 const Context = createContext()
@@ -164,8 +170,15 @@ const rootReducer = (state, action) => {
         case "SET_CONTACTS_COUNT":
             return { ...state, contacts_count: action.payload }
 
+        case "SET_CURRENT_CONTACT":
+            return { ...state, current_contact: action.payload }
+
+
         case "SET_CURRENT_CONTACT_MESSAGE":
             return { ...state, current_contact_message: action.payload }
+
+        case "SET_NEW_SHORTENED_URL":
+            return { ...state, newShortenedUrl: action.payload }
 
 
         case "SET_REFERRALS":
@@ -255,6 +268,22 @@ const rootReducer = (state, action) => {
 
         case "SET_CURRENT_PAGE":
             return { ...state, current_page: action.payload }
+
+        case "SET_CURRENT_VAULT":
+            return { ...state, current_vault: action.payload }
+
+        case "SET_CURRENT_VAULT_FIELD":
+            return { ...state, current_vault_field: action.payload }
+
+
+
+
+        case "SET_VALUTS":
+            return { ...state, vaults: action.payload }
+
+        case "SET_VALUTS_COUNT":
+            return { ...state, vaults_count: action.payload }
+
 
         default:
             return state;

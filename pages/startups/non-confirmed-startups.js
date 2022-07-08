@@ -30,7 +30,7 @@ const nonConfirmedStartups = () => {
 
     const [buttonLoading, setButtonLoading] = useState(false);
 
-    let type = 1;
+    let type = 0;
 
     useEffect(() => {
         (async () => {
@@ -249,7 +249,7 @@ const nonConfirmedStartups = () => {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <span className="com-name">{startup?.sector_name}</span>
+                                                            <span className="com-name">{startup.startups_sector}</span>
                                                         </td>
 
                                                         <td>

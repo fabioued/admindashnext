@@ -99,8 +99,9 @@ const ViewStartup = () => {
                                 Traction
                             </div>
                             <div className="card-body about-content">
+
                                 <p className="card-text"> {
-                                    startup.overview.traction && (<p className="card-text">{startup.overview.traction}</p>)
+                                    startup.overview.traction && (<p className="card-text" dangerouslySetInnerHTML={{ __html: startup.overview.traction }}></p>)
                                 }
 
                                     {

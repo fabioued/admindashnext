@@ -128,7 +128,7 @@ const Jobs = () => {
 
     return (
         <>
-            {/* <InnerMenu links={Links.newsLinks} /> */}
+            <InnerMenu links={Links.jobsLinks} />
             {loading && (<PageLoader />)}
             {!loading && (
                 <div className="container-fluid">

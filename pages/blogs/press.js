@@ -119,7 +119,6 @@ const Press = () => {
                         <div className="col-lg-8">
                             <div className="breadcrumb-main user-member justify-content-sm-between ">
                                 <BreadCrumb title={"Manange Press"} count={press_count} />
-                                {/* <BreadcrumbButton title={"New Blog"} /> */}
                             </div>
                         </div>
                     </div>

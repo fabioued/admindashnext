@@ -77,7 +77,7 @@ const BlogCard = ({ blog }) => {
                         <div className="bookmark__button py-20  mt-15 flex-wrap">
                             <div className="button-group">
                                 {<Button block className="feed-approve" onClick={() => showModal(blog)}>View</Button>}
-                                {/* {<Button block className="feed-reject" onClick={() => showModal(blog)}>Edit</Button>} */}
+                                {<Button block className="feed-reject" onClick={() => showModal(blog)}>Edit</Button>}
                                 {<Button block className="feed-delete" onClick={() => showDeleteBlogModal(blog)}>Delete</Button>}
                             </div>
                         </div>

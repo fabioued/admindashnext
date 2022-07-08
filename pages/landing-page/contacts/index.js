@@ -10,6 +10,9 @@ import { toast } from "react-toastify"
 import moment from 'moment';
 import { Avatar, Tag, Modal } from 'antd'
 import { CloseCircleFilled } from '@ant-design/icons';
+import Reply from "../../../components/contacts/reply";
+
+
 
 const Contacts = () => {
 
@@ -91,7 +94,21 @@ const Contacts = () => {
     }
 
     const reply = async (contact) => {
-        alert('Reply function coming soon !')
+        dispatch({
+            type: "SET_CURRENT_CONTACT",
+            payload: contact
+        })
+
+        dispatch({
+            type: "SET_MODAL",
+            payload: true
+        })
+
+
+        dispatch({
+            type: "SET_MODAL_NAME",
+            payload: "replyMessage"
+        })
     }
 
     const deleteRecord = async (id) => {
@@ -254,7 +271,7 @@ const Contacts = () => {
                         <div className="container justify-content-center">
                             <div className="row ">
                                 <div className="col-md-12 pb-md-30">
-                                    <div className="contact-message alert-icon-area alert alert-dark" role="alert">
+                                    <div className="contact-message-text alert-icon-area alert alert-dark" role="alert">
                                         <div className="alert-content">
                                             <p>{current_contact_message}</p>
                                         </div>
@@ -267,6 +284,26 @@ const Contacts = () => {
                         </div>
                     </div>
                 </Modal>
+
+                <Modal
+                    className="diasporaModal"
+                    destroyOnClose={true}
+                    centered={true}
+                    visible={modal_is_open && modal_name === "replyMessage"}
+                    title={modalTitle}
+                    closeIcon={<CloseCircleFilled style={{ fontSize: '150%' }} />}
+                    onOk={closeModal}
+                    onCancel={closeModal}
+                    width={1000}
+                    bodyStyle={{ overflowX: 'scroll' }}
+                    zIndex={9000}
+                    footer={null}
+
+                >
+                    <Reply />
+                </Modal>
+
+
 
             </div>
 
