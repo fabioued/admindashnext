@@ -11,30 +11,32 @@ import {
     Button
 } from 'antd';
 import dynamic from "next/dynamic";
-import 'suneditor/dist/css/suneditor.min.css';
-
-import {
-    align,
-    font,
-    fontColor,
-    fontSize,
-    formatBlock,
-    hiliteColor,
-    horizontalRule,
-    lineHeight,
-    list,
-    paragraphStyle,
-    table,
-    template,
-    textStyle,
-    image,
-    link
-} from "suneditor/src/plugins";
 
 
-const SunEditor = dynamic(() => import("suneditor-react"), {
-    ssr: false,
-});
+//import 'suneditor/dist/css/suneditor.min.css';
+
+// import {
+//     align,
+//     font,
+//     fontColor,
+//     fontSize,
+//     formatBlock,
+//     hiliteColor,
+//     horizontalRule,
+//     lineHeight,
+//     list,
+//     paragraphStyle,
+//     table,
+//     template,
+//     textStyle,
+//     image,
+//     link
+// } from "suneditor/src/plugins";
+
+
+// const SunEditor = dynamic(() => import("suneditor-react"), {
+//     ssr: false,
+// });
 
 const AddBlog = () => {
     const editorRef = React.createRef();
@@ -104,7 +106,7 @@ const AddBlog = () => {
                                         <input type="text" className="form-control ih-medium ip-gray radius-xs b-light px-15" placeholder="City" />
                                     </div>
 
-                                    <SunEditor
+                                    {/* <SunEditor
                                         autoFocus={true}
                                         lang="en"
                                         setOptions={{
@@ -167,7 +169,7 @@ const AddBlog = () => {
                                         }}
 
                                         onChange={handleChange}
-                                    />
+                                    /> */}
 
                                     <div className="col-md-8">
                                         <div className=" bookmark__button py-20  mt-15 flex-wrap">
