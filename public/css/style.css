@@ -1,3 +1,13 @@
+.tox-icon svg {
+  fill: black !important;
+}
+
+.infoIcon svg {
+  position: relative !important;
+  top: -2px !important;
+  fill: black !important;
+}
+
 .ant-alert-close-icon span svg {
   fill: black !important;
 }

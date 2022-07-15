@@ -15,8 +15,8 @@ const InnerMenu = ({ links }) => {
 
     let numToShow;
 
-    if (links.length > 8) {
-        numToShow = 8;
+    if (links.length > 7) {
+        numToShow = 7;
     } else {
         numToShow = links.length;
     }

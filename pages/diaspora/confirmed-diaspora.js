@@ -15,6 +15,7 @@ import DeleteDiaspora from "../../components/diaspora/DeleteDiaspora";
 import Filter from "../../components/filters/index";
 import BreadCrumb from "../../components/Navigation/Breadcrumb"
 import PageLoader from '../../components/loaders/PageLoader'
+import { toast } from "react-toastify"
 
 // import { Calendar } from "react-multi-date-picker";
 import Links from "../../lib/innerMenu";
@@ -25,32 +26,41 @@ const confirmedDiaspora = () => {
     const {
         loading, diaspora, diaspora_count,
         modal_is_open, modal_name,
-        page, pagination, has_more_data, total_count
+        page, pagination, has_more_data, total_count, viewing_user
     } = state;
+
 
     const [buttonLoading, setButtonLoading] = useState(false);
 
     let type = 1;
 
+
+    const fetchAll = async () => {
+        page = 0;
+        const data = await diasporaService.fetchRecords(page, pagination, type);
+        dispatch({
+            type: "SET_TOTAL_COUNT",
+            payload: data.totalCount
+        });
+        dispatch({
+            type: "SET_DIASPORA",
+            payload: data.diaspora
+        });
+        dispatch({
+            type: "SET_DIASPORA_COUNT",
+            payload: data.count
+        });
+
+        (data.count && data.count === pagination && data.count <= data.totalCount) ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
+    }
+
+
     useEffect(() => {
         (async () => {
-            page = 0;
+
             dispatch({
                 type: "SET_LOADING",
                 payload: true
-            });
-            const data = await diasporaService.fetchRecords(page, pagination, type);
-            dispatch({
-                type: "SET_TOTAL_COUNT",
-                payload: data.totalCount
-            });
-            dispatch({
-                type: "SET_DIASPORA",
-                payload: data.diaspora
-            });
-            dispatch({
-                type: "SET_DIASPORA_COUNT",
-                payload: data.count
             });
 
             dispatch({
@@ -58,8 +68,7 @@ const confirmedDiaspora = () => {
                 payload: 'confirmed-diaspora'
             });
 
-
-            (data.count && data.count === pagination && data.count <= data.totalCount) ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
+            fetchAll();
 
             dispatch({
                 type: "SET_LOADING",
@@ -100,16 +109,64 @@ const confirmedDiaspora = () => {
         })
     }
 
-    const rejectDiaspora = (diaspora) => {
-
+    const rejectDiaspora = async (diaspora) => {
+        dispatch({
+            type: "SET_LOADING",
+            payload: true
+        });
         dispatch({
             type: "SET_VIEWING_USER",
             payload: diaspora
         });
+
+        let email = diaspora.users_email;
+        let id = diaspora.users_id;
+        let name = diaspora?.users_firstname + ' ' + diaspora?.users_name;
+        let lang = diaspora.profile_preferedLanguage;
+        try {
+            const payload = {
+                id,
+                name,
+                lang,
+                email,
+            }
+            await diasporaService.RejectDiaspora(payload);
+            await fetchAll();
+            dispatch({
+                type: "SET_LOADING",
+                payload: false
+            });
+
+            // dispatch({
+            //     type: "SET_MODAL",
+            //     payload: true
+            // });
+
+            // dispatch({
+            //     type: "SET_MODAL_NAME",
+            //     payload: ""
+            // });
+
+            toast.success('The user has been rejected successfully !!!', {
+                position: toast.POSITION.TOP_RIGHT
+            })
+        } catch (err) {
+            dispatch({
+                type: "SET_LOADING",
+                payload: false
+            });
+            let message = err.message;
+            // console.log({ err });
+            toast.error(message, {
+                position: toast.POSITION.TOP_RIGHT
+            })
+
+        }
+
         setModalTitle('Rejecting Diaspora:  ' + diaspora?.users_firstname + ' ' + diaspora?.users_name)
         dispatch({
             type: "SET_MODAL",
-            payload: true
+            payload: false
         });
         dispatch({
             type: "SET_MODAL_NAME",

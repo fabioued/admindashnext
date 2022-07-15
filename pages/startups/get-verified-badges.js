@@ -1,7 +1,7 @@
 import InnerMenu from "../../components/Navigation/InnerMenu";
 import { useRouter } from "next/router"
 import React, { useContext, useEffect, useState } from 'react';
-import { Avatar, Tag, Modal, Button } from 'antd'
+import { Avatar, Tag, Modal, Button, Tooltip } from 'antd'
 import { Context } from "../../context/index"
 import Links from "../../lib/innerMenu"
 import { EyeFilled, CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
@@ -10,7 +10,7 @@ import startupsService from "../../services/startups/startupsService";
 import PageLoader from '../../components/loaders/PageLoader'
 import BreadCrumb from "../../components/Navigation/Breadcrumb"
 import EmptyCard from "../../components/empty/Card";
-import { SyncOutlined } from '@ant-design/icons';
+import { SyncOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { toast } from "react-toastify"
 
 const GetVerifiedBages = () => {
@@ -23,10 +23,10 @@ const GetVerifiedBages = () => {
         vaults, vaults_count,
         modal_is_open, modal_name,
         current_vault,
-        current_vault_field
+        current_vault_field,
+        loading
     } = state;
 
-    const [loading, setLoading] = useState(false);
 
     const fetchAll = async () => {
         const data = await startupsService.fetchAllVaults();
@@ -85,14 +85,12 @@ const GetVerifiedBages = () => {
             payload: field
         });
         if (type === "confirm") {
-            //approveVault
-
             dispatch({
                 type: "SET_LOADING",
                 payload: true
             });
 
-            let id;
+            let id = 0;
             if (current_vault_field === 'BU') {
                 id = current_vault.data[1].id
             } else if (current_vault_field === 'PD') {
@@ -104,7 +102,10 @@ const GetVerifiedBages = () => {
             let data = {
                 id,
                 status: 2,
+                reason: ''
             }
+
+            //alert(id)
             await startupsService.updateVault(data);
 
             await fetchAll()
@@ -142,8 +143,6 @@ const GetVerifiedBages = () => {
         })
     }
 
-
-
     const getStatus = (status) => {
         if (status === "1") {
             return "Under Review";
@@ -155,10 +154,25 @@ const GetVerifiedBages = () => {
     }
 
 
+
+    const finalConfirm = async (vault) => {
+
+        alert('send confirmation email')
+    };
+
+
+    const finalReject = async (vault) => {
+        alert('send rejection email')
+
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            setLoading(true);
+            dispatch({
+                type: "SET_LOADING",
+                payload: true
+            });
             let id;
             if (current_vault_field === 'BU') {
                 id = current_vault.data[1].id
@@ -180,7 +194,10 @@ const GetVerifiedBages = () => {
             await fetchAll()
 
             setReason('');
-            setLoading(false)
+            dispatch({
+                type: "SET_LOADING",
+                payload: false
+            });
 
             dispatch({
                 type: "SET_MODAL",
@@ -196,7 +213,10 @@ const GetVerifiedBages = () => {
                 position: toast.POSITION.TOP_RIGHT
             })
         } catch (err) {
-            setLoading(false)
+            dispatch({
+                type: "SET_LOADING",
+                payload: false
+            });
             let message = err.message;
             toast.error(message, {
                 position: toast.POSITION.TOP_RIGHT
@@ -236,9 +256,6 @@ const GetVerifiedBages = () => {
                                                 <th>
                                                     <span className="userDatatable-title">Startup </span>
                                                 </th>
-                                                {/* <th>
-                                                <span className="userDatatable-title">Email</span>
-                                            </th> */}
                                                 <th>
                                                     <span className="userDatatable-title">Business Registration</span>
                                                 </th>
@@ -249,10 +266,7 @@ const GetVerifiedBages = () => {
                                                     <span className="userDatatable-title">Founder Infos</span>
                                                 </th>
                                                 <th>
-                                                    <span className="userDatatable-title">Status</span>
-                                                </th>
-                                                <th>
-                                                    <span className="userDatatable-title float-right">Action</span>
+                                                    <span className="userDatatable-title float-right">Actions</span>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -271,13 +285,18 @@ const GetVerifiedBages = () => {
                                                     </td>
                                                     <td>
                                                         <div className="contact-item d-flex align-items-center">
-                                                            <div className="contact-personal-info d-flex">
-                                                                <Avatar size={40} className="profile-image rounded-circle d-block m-0 wh-38"
-                                                                    src={''} />
+                                                            <div className="contact-personal-info ">
+                                                                <div className="row col-md-12 mb-3">
+                                                                    <Avatar size={40} className="profile-image rounded-circle d-block m-0 wh-38"
+                                                                        src={''} />
+                                                                </div>
                                                                 <div className="contact_title">
                                                                     <h6>
                                                                         {vault.name}
                                                                     </h6>
+                                                                    <p>
+                                                                        email here
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -302,7 +321,11 @@ const GetVerifiedBages = () => {
                                                                 </div>
 
                                                                 <div>
-                                                                    <Tag color="purple">Status : {getStatus(vault.data[1].status)}</Tag>
+                                                                    <Tag color="purple">Status : {getStatus(vault.data[1].status)}
+                                                                        <Tooltip title={vault.data[1].reason} color='black'>
+                                                                            <InfoCircleOutlined className="infoIcon mx-2" />
+                                                                        </Tooltip>
+                                                                    </Tag>
                                                                 </div>
                                                             </div>
 
@@ -327,7 +350,12 @@ const GetVerifiedBages = () => {
                                                                     </Button>
                                                                 </div>
                                                                 <div>
-                                                                    <Tag color="purple">Status : {getStatus(vault.data[0].status)}</Tag>
+                                                                    <Tag color="purple">Status : {getStatus(vault.data[0].status)}
+
+                                                                        <Tooltip title={vault.data[0].reason} color='black'>
+                                                                            <InfoCircleOutlined className="infoIcon mx-2" />
+                                                                        </Tooltip>
+                                                                    </Tag>
                                                                 </div>
                                                             </div>
 
@@ -367,34 +395,27 @@ const GetVerifiedBages = () => {
 
                                                             </div>
                                                             <div>
-                                                                <Tag color="purple">Status : {getStatus(vault.data[2].status)}</Tag>
+                                                                <Tag color="purple">Status : {getStatus(vault.data[2].status)}
+                                                                    <Tooltip title={vault.data[2].reason} color='black'>
+                                                                        <InfoCircleOutlined className="infoIcon mx-2" />
+                                                                    </Tooltip>
+                                                                </Tag>
                                                             </div>
 
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <div className="userDatatable-content">
-                                                            <span className="text-black gvb-status-accepted">
-                                                                <p>-
-                                                                    {/* <CheckCircleFilled color="red" />
-                                                                    <span className="pull-right ml-1">
-                                                                        Accepted
-                                                                    </span> */}
-                                                                </p>
-                                                            </span>
-                                                        </div>
-                                                    </td>
+
                                                     <td>
                                                         <div className="userDatatable-content">
                                                             <div className="col-md-12 justify-content-around d-flex flex-column">
 
                                                                 <div>
-                                                                    <Button className="gvb-btn-confirm" type="primary" size="small" icon={<CheckCircleFilled />}>
+                                                                    <Button className="gvb-btn-confirm" onClick={() => { finalConfirm(vault) }} type="primary" size="small" icon={<CheckCircleFilled />}>
                                                                         Confirm
                                                                     </Button>
                                                                 </div>
                                                                 <div>
-                                                                    <Button className="gvb-btn-reject" type="primary" size="small" icon={<CloseCircleFilled />}>
+                                                                    <Button className="gvb-btn-reject" onClick={() => { finalReject(vault) }} type="primary" size="small" icon={<CloseCircleFilled />}>
                                                                         Reject
                                                                     </Button>
                                                                 </div>

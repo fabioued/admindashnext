@@ -31,32 +31,39 @@ const nonConfirmedDiaspora = () => {
 
     let type = 0;
 
+    const fetchAll = async () => {
+        page = 0;
+        const data = await diasporaService.fetchRecords(page, pagination, type);
+        dispatch({
+            type: "SET_TOTAL_COUNT",
+            payload: data.totalCount
+        });
+        dispatch({
+            type: "SET_DIASPORA",
+            payload: data.diaspora
+        });
+        dispatch({
+            type: "SET_DIASPORA_COUNT",
+            payload: data.count
+        });
+
+        (data.count && data.count === pagination && data.count <= data.totalCount) ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
+    }
+
     useEffect(() => {
         (async () => {
-            page = 0;
+
             dispatch({
                 type: "SET_LOADING",
                 payload: true
-            });
-            const data = await diasporaService.fetchRecords(page, pagination, type);
-            dispatch({
-                type: "SET_TOTAL_COUNT",
-                payload: data.totalCount
-            });
-            dispatch({
-                type: "SET_DIASPORA",
-                payload: data.diaspora
-            });
-            dispatch({
-                type: "SET_DIASPORA_COUNT",
-                payload: data.count
             });
 
             dispatch({
                 type: "SET_CURRENT_PAGE",
                 payload: 'confirmed-diaspora'
             });
-            (data.count && data.count === pagination && data.count <= data.totalCount) ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
+
+            fetchAll();
 
             dispatch({
                 type: "SET_LOADING",
@@ -64,7 +71,6 @@ const nonConfirmedDiaspora = () => {
             });
         })();
     }, []);
-
     const viewDiaspora = async (diaspora) => {
         const payload = {
             id: diaspora?.users_id,
@@ -266,7 +272,7 @@ const nonConfirmedDiaspora = () => {
                                                 {diaspora && diaspora.length < 1 && (
                                                     <tr>
                                                         <td colSpan="7" className="text-center">
-                                                            No confirmed diaspora
+                                                            No non approved diaspora
                                                         </td>
                                                     </tr>
                                                 )}

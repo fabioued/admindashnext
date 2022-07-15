@@ -15,6 +15,7 @@ import Filter from "../../components/filters/index";
 import BreadCrumb from "../../components/Navigation/Breadcrumb"
 import PageLoader from '../../components/loaders/PageLoader'
 import ProtectedRoute from "../../components/routes/protectedRoute"
+import { toast } from "react-toastify"
 
 // import { Calendar } from "react-multi-date-picker";
 import Links from "../../lib/innerMenu";
@@ -32,41 +33,45 @@ const confirmedStartups = () => {
 
     let type = 1;
 
+
+    const fetchAll = async () => {
+        page = 0;
+        const data = await startupsService.fetchRecords(page, pagination, type);
+        dispatch({
+            type: "SET_TOTAL_COUNT",
+            payload: data.totalCount
+        });
+        dispatch({
+            type: "SET_STARTUPS",
+            payload: data.startups
+        });
+        dispatch({
+            type: "SET_STARTUPS_COUNT",
+            payload: data.count
+        });
+        let count = startups_count + data.count;
+
+        if (count < data.totalCount) {
+            dispatch({ type: "SET_HAS_MORE_DATA", payload: true })
+        }
+        if (count === data.totalCount) {
+            dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
+        }
+
+        (data.totalCount && data.count === pagination && data.count <= data.totalCount) ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
+    }
+
     useEffect(() => {
         (async () => {
-            page = 0;
-            dispatch({
-                type: "SET_LOADING",
-                payload: true
-            });
-            const data = await startupsService.fetchRecords(page, pagination, type);
-            dispatch({
-                type: "SET_TOTAL_COUNT",
-                payload: data.totalCount
-            });
-            dispatch({
-                type: "SET_STARTUPS",
-                payload: data.startups
-            });
-            dispatch({
-                type: "SET_STARTUPS_COUNT",
-                payload: data.count
-            });
-            let count = startups_count + data.count;
             dispatch({
                 type: "SET_CURRENT_PAGE",
                 payload: 'confirmed-startups'
             });
-
-            if (count < data.totalCount) {
-                dispatch({ type: "SET_HAS_MORE_DATA", payload: true })
-            }
-            if (count === data.totalCount) {
-                dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
-            }
-
-            (data.totalCount && data.count === pagination && data.count <= data.totalCount) ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
-
+            dispatch({
+                type: "SET_LOADING",
+                payload: true
+            });
+            await fetchAll();
             dispatch({
                 type: "SET_LOADING",
                 payload: false
@@ -107,21 +112,61 @@ const confirmedStartups = () => {
         })
     }
 
-    const rejectStartup = (startup) => {
+    const rejectStartup = async (startup) => {
 
         dispatch({
             type: "SET_VIEWING_STARTUP",
             payload: startup
         });
-        setModalTitle('Rejecting Startup:  ' + startup?.startups_startupname)
-        dispatch({
-            type: "SET_MODAL",
-            payload: true
-        });
-        dispatch({
-            type: "SET_MODAL_NAME",
-            payload: "RejectStartup"
-        });
+
+        let email = startup.user_email;
+
+        let id = startup.startups_id;
+        let startup_name = startup?.startups_startupname;
+
+        let lang = startup.startupProfile_preferedLanguage;
+
+        try {
+            dispatch({
+                type: "SET_LOADING",
+                payload: true
+            });
+            const payload = {
+                id,
+                startup_name,
+                lang,
+            }
+            await startupsService.rejectStartup(payload);
+            await fetchAll();
+            dispatch({
+                type: "SET_LOADING",
+                payload: false
+            });
+
+            toast.success('The startup has been rejected successfully !!!', {
+                position: toast.POSITION.TOP_RIGHT
+            })
+        } catch (err) {
+            dispatch({
+                type: "SET_LOADING",
+                payload: false
+            });
+            let message = err.message;
+            toast.error(message, {
+                position: toast.POSITION.TOP_RIGHT
+            })
+
+        }
+
+        // setModalTitle('Rejecting Startup:  ' + startup?.startups_startupname)
+        // dispatch({
+        //     type: "SET_MODAL",
+        //     payload: true
+        // });
+        // dispatch({
+        //     type: "SET_MODAL_NAME",
+        //     payload: "RejectStartup"
+        // });
 
     }
 

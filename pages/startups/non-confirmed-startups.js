@@ -32,40 +32,46 @@ const nonConfirmedStartups = () => {
 
     let type = 0;
 
+
+    const fetchAll = async () => {
+        page = 0;
+        const data = await startupsService.fetchRecords(page, pagination, type);
+        dispatch({
+            type: "SET_TOTAL_COUNT",
+            payload: data.totalCount
+        });
+        dispatch({
+            type: "SET_STARTUPS",
+            payload: data.startups
+        });
+        dispatch({
+            type: "SET_STARTUPS_COUNT",
+            payload: data.count
+        });
+        let count = startups_count + data.count;
+
+        if (count < data.totalCount) {
+            dispatch({ type: "SET_HAS_MORE_DATA", payload: true })
+        }
+        if (count === data.totalCount) {
+            dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
+        }
+
+        (data.totalCount && data.count === pagination && data.count <= data.totalCount) ? dispatch({ type: "SET_HAS_MORE_DATA", payload: true }) : dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
+    }
+
+
     useEffect(() => {
         (async () => {
-            page = 0;
-            dispatch({
-                type: "SET_LOADING",
-                payload: true
-            });
-            const data = await startupsService.fetchRecords(page, pagination, type);
-            let count = startups_count + data.count;
-            dispatch({
-                type: "SET_TOTAL_COUNT",
-                payload: data.totalCount
-            });
-            dispatch({
-                type: "SET_STARTUPS",
-                payload: data.startups
-            });
-            dispatch({
-                type: "SET_STARTUPS_COUNT",
-                payload: data.count
-            });
-
             dispatch({
                 type: "SET_CURRENT_PAGE",
                 payload: 'non-confirmed-startups'
             });
-
-            if (count < data.totalCount) {
-                dispatch({ type: "SET_HAS_MORE_DATA", payload: true })
-            }
-            if (count === data.totalCount) {
-                dispatch({ type: "SET_HAS_MORE_DATA", payload: false })
-            }
-
+            dispatch({
+                type: "SET_LOADING",
+                payload: true
+            });
+            await fetchAll();
             dispatch({
                 type: "SET_LOADING",
                 payload: false
